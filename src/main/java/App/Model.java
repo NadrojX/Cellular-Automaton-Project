@@ -22,18 +22,12 @@ public class Model {
     rowCount = grid.rowCount;
   }
 
-
   public void initialisation(int fireNumber, int fireFighterNumber) {
     for (int index = 0; index < fireNumber; index++)
-      fires.add(randomPosition());
+      fires.add(new Position(0, 0).randomPosition(rowCount, colCount));
     for (int index = 0; index < fireFighterNumber; index++)
-      firefighters.add(randomPosition());
+      firefighters.add(new Position(0, 0).randomPosition(rowCount, colCount));
   }
-
-  private Position randomPosition() {
-    return new Position((int) (Math.random() * rowCount), (int) (Math.random() * colCount));
-  }
-
 
   public void activation() {
     Entities ffs = new FiresFightersEntities(grid);
