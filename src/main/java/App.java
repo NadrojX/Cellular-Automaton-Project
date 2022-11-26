@@ -25,7 +25,7 @@ public class App extends Application {
         Button switchPause = new Button("Pause");
         VBox buttons = new VBox();
         HBox total = new HBox();
-        Grid grid = new Grid(1000,1000,20,20);
+        Grid grid = new Grid(500,500,20,20);
 
         root.getChildren().add(total);
         total.getChildren().add(buttons);
@@ -45,6 +45,10 @@ public class App extends Application {
                 grid.repaint();
             }
         }, 0, 50 , TimeUnit.MILLISECONDS);
+
+        primaryStage.setTitle("Automate Project");
+        primaryStage.setResizable(false);
+        primaryStage.setOnCloseRequest(event -> System.exit(0));
     }
 }
 
