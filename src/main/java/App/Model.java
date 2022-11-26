@@ -1,3 +1,9 @@
+package App;
+
+import Strategy.Entities;
+import Strategy.FiresEntities;
+import Strategy.FiresFightersEntities;
+
 import java.util.*;
 
 
@@ -30,11 +36,14 @@ public class Model {
 
 
   public void activation() {
+    Entities ffs = new FiresFightersEntities(grid);
+    Entities fs = new FiresEntities(grid);
+
     ffNewPositions = new ArrayList<>();
     for (Position ff : firefighters) {
       Position newPosition = activateFirefighter(ff);
-      grid.paint(ff.row, ff.col);
-      grid.paintFF(newPosition.row, newPosition.col);
+      grid.paint(ff.row(), ff.col());
+      ffs.paint(newPosition.row(), newPosition.col());
       ffNewPositions.add(newPosition);
     }
     firefighters = ffNewPositions;
@@ -44,7 +53,7 @@ public class Model {
         newFires.addAll(activateFire(fire));
       }
       for (Position newFire : newFires)
-        grid.paintFire(newFire.row, newFire.col);
+        fs.paint(newFire.row(), newFire.col());
       fires.addAll(newFires);
     }
     step++;
@@ -67,15 +76,15 @@ public class Model {
 
   private void extinguish(Position position) {
     fires.remove(position);
-    grid.paint(position.row, position.col);
+    grid.paint(position.row(), position.col());
   }
 
   private List<Position> next(Position position) {
     List<Position> list = new ArrayList<>();
-    if (position.row > 0) list.add(new Position(position.row - 1, position.col));
-    if (position.col > 0) list.add(new Position(position.row, position.col - 1));
-    if (position.row < rowCount - 1) list.add(new Position(position.row + 1, position.col));
-    if (position.col < colCount - 1) list.add(new Position(position.row, position.col + 1));
+    if (position.row() > 0) list.add(new Position(position.row() - 1, position.col()));
+    if (position.col() > 0) list.add(new Position(position.row(), position.col() - 1));
+    if (position.row() < rowCount - 1) list.add(new Position(position.row() + 1, position.col()));
+    if (position.col() < colCount - 1) list.add(new Position(position.row(), position.col() + 1));
     return list;
   }
 
@@ -100,6 +109,4 @@ public class Model {
     return position;
   }
 
-  public record Position(int row, int col) {
-  }
 }
