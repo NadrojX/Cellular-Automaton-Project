@@ -6,7 +6,6 @@ import Strategy.FiresFightersEntities;
 
 import java.util.*;
 
-
 public class Model {
   Grid grid;
   double colCount;
@@ -31,12 +30,12 @@ public class Model {
   }
 
   public void activation() {
-    Entities ffs = new FiresFightersEntities(grid);
-    Entities fs = new FiresEntities(grid);
+    FiresFightersEntities ffs = new FiresFightersEntities(grid);
+    FiresEntities fs = new FiresEntities(grid);
 
     ffNewPositions = new ArrayList<>();
     for (Position ff : firefighters) {
-      Position newPosition = activateFirefighter(ff);
+      Position newPosition = ffs.activateFirefighter(ff, fires);
       grid.paint(ff.row(), ff.col());
       ffs.paint(newPosition.row(), newPosition.col());
       ffNewPositions.add(newPosition);
@@ -45,53 +44,13 @@ public class Model {
     if (step % 2 == 0) {
       List<Position> newFires = new ArrayList<>();
       for (Position fire : fires) {
-        newFires.addAll(activateFire(fire));
+        newFires.addAll(fs.activateFire(fire));
       }
       for (Position newFire : newFires)
         fs.paint(newFire.row(), newFire.col());
       fires.addAll(newFires);
     }
     step++;
-
-  }
-
-  private List<Position> activateFire(Position position) {
-    return positionInstance.nextPosition(position, rowCount, colCount);
-  }
-
-  private Position activateFirefighter(Position position) {
-    Position randomPosition = aStepTowardFire(position);
-    List<Position> nextFires = positionInstance.nextPosition(randomPosition, colCount, rowCount).stream().filter(fires::contains).toList();
-    extinguish(randomPosition);
-    for (Position fire : nextFires)
-      extinguish(fire);
-    return randomPosition;
-  }
-
-  private void extinguish(Position position) {
-    fires.remove(position);
-    grid.paint(position.row(), position.col());
-  }
-
-
-  private Position aStepTowardFire(Position position) {
-    Set<Position> seen = new HashSet<>();
-    HashMap<Position, Position> firstMove = new HashMap<>();
-    Queue<Position> toVisit = new LinkedList<>(positionInstance.nextPosition(position, colCount, rowCount));
-    for (Position initialMove : toVisit)
-      firstMove.put(initialMove, initialMove);
-    while (!toVisit.isEmpty()) {
-      Position current = toVisit.poll();
-      if (fires.contains(current))
-        return firstMove.get(current);
-      for (Position adjacent : positionInstance.nextPosition(current, colCount, rowCount)) {
-        if (seen.contains(adjacent)) continue;
-        toVisit.add(adjacent);
-        seen.add(adjacent);
-        firstMove.put(adjacent, firstMove.get(current));
-      }
-    }
-    return position;
   }
 
 }

@@ -40,10 +40,9 @@ public class Grid extends Canvas{
             getGraphicsContext2D().strokeLine(0, col*width/colCount, height, col*width/colCount);
         for(int row=0; row<rowCount;row++)
             getGraphicsContext2D().strokeLine(row*height/rowCount,0,row*height/rowCount, width);
-
     }
 
-    void paint(int row, int col){
+    public void paint(int row, int col){
         getGraphicsContext2D().setFill(Color.WHITE);
         getGraphicsContext2D().fillRect(row*height/rowCount,col*width/colCount,height/rowCount,width/colCount);
     }
