@@ -14,6 +14,7 @@ public class Model {
   List<Position> firefighters = new ArrayList<>();
   Set<Position> fires = new HashSet<>();
   List<Position> ffNewPositions;
+  Position positionInstance = new Position(0, 0);
   int step = 0;
 
   public Model(Grid grid) {
@@ -24,9 +25,9 @@ public class Model {
 
   public void initialisation(int fireNumber, int fireFighterNumber) {
     for (int index = 0; index < fireNumber; index++)
-      fires.add(new Position(0, 0).randomPosition(rowCount, colCount));
+      fires.add(positionInstance.randomPosition(rowCount, colCount));
     for (int index = 0; index < fireFighterNumber; index++)
-      firefighters.add(new Position(0, 0).randomPosition(rowCount, colCount));
+      firefighters.add(positionInstance.randomPosition(rowCount, colCount));
   }
 
   public void activation() {
@@ -55,13 +56,12 @@ public class Model {
   }
 
   private List<Position> activateFire(Position position) {
-    return next(position);
+    return positionInstance.nextPosition(position, rowCount, colCount);
   }
-
 
   private Position activateFirefighter(Position position) {
     Position randomPosition = aStepTowardFire(position);
-    List<Position> nextFires = next(randomPosition).stream().filter(fires::contains).toList();
+    List<Position> nextFires = positionInstance.nextPosition(randomPosition, colCount, rowCount).stream().filter(fires::contains).toList();
     extinguish(randomPosition);
     for (Position fire : nextFires)
       extinguish(fire);
@@ -73,27 +73,18 @@ public class Model {
     grid.paint(position.row(), position.col());
   }
 
-  private List<Position> next(Position position) {
-    List<Position> list = new ArrayList<>();
-    if (position.row() > 0) list.add(new Position(position.row() - 1, position.col()));
-    if (position.col() > 0) list.add(new Position(position.row(), position.col() - 1));
-    if (position.row() < rowCount - 1) list.add(new Position(position.row() + 1, position.col()));
-    if (position.col() < colCount - 1) list.add(new Position(position.row(), position.col() + 1));
-    return list;
-  }
 
   private Position aStepTowardFire(Position position) {
-    Queue<Position> toVisit = new LinkedList<>();
     Set<Position> seen = new HashSet<>();
     HashMap<Position, Position> firstMove = new HashMap<>();
-    toVisit.addAll(next(position));
+    Queue<Position> toVisit = new LinkedList<>(positionInstance.nextPosition(position, colCount, rowCount));
     for (Position initialMove : toVisit)
       firstMove.put(initialMove, initialMove);
     while (!toVisit.isEmpty()) {
       Position current = toVisit.poll();
       if (fires.contains(current))
         return firstMove.get(current);
-      for (Position adjacent : next(current)) {
+      for (Position adjacent : positionInstance.nextPosition(current, colCount, rowCount)) {
         if (seen.contains(adjacent)) continue;
         toVisit.add(adjacent);
         seen.add(adjacent);
