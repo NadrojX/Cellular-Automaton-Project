@@ -22,6 +22,10 @@ public class EntitiesContext {
                 entitiesManager = new FiresEntities(grid);
                 this.strategy = strategy;
             }
+            case "mffs" -> {
+                entitiesManager = new MotorizedFFEntities(grid);
+                this.strategy = strategy;
+            }
         }
     }
 
@@ -35,6 +39,9 @@ public class EntitiesContext {
             }
             case "ffs" -> {
                 return Collections.singletonList(entitiesManager.activateFirefighter(position, fires));
+            }
+            case "mffs" -> {
+                return Collections.singletonList(entitiesManager.activateMotorizedFirefighter(position, fires));
             }
         }
         return null;

@@ -28,4 +28,8 @@ public abstract class EntitiesManager implements Entities{
         return null;
     }
 
+    public Position activateMotorizedFirefighter(Position position, Set<Position> fires) {
+        return null;
+    }
+
 }
