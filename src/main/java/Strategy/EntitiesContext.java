@@ -1,14 +1,42 @@
 package Strategy;
 
+import App.Grid;
+import App.Position;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
 public class EntitiesContext {
 
-    Entities entities;
+    EntitiesManager entitiesManager;
+    String strategy;
 
-    public void setEntities(Entities entities) {
-        this.entities = entities;
+    public EntitiesContext(Grid grid, String strategy){
+        switch (strategy) {
+            case "ffs" -> {
+                entitiesManager = new FiresFightersEntities(grid);
+                this.strategy = strategy;
+            }
+            case "fs" -> {
+                entitiesManager = new FiresEntities(grid);
+                this.strategy = strategy;
+            }
+        }
     }
 
-    public void entitiesPaint(int row, int col){
-        entities.paint(row, col);
+    public void paint(int row, int col){
+        entitiesManager.paint(row, col);
+    }
+    public List<Position> activate(Position position, Set<Position> fires){
+        switch (strategy){
+            case "fs" -> {
+                return entitiesManager.activateFire(position);
+            }
+            case "ffs" -> {
+                return Collections.singletonList(entitiesManager.activateFirefighter(position, fires));
+            }
+        }
+        return null;
     }
 }

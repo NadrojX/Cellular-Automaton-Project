@@ -6,20 +6,11 @@ import javafx.scene.paint.Color;
 
 import java.util.List;
 
-public class FiresEntities implements Entities{
-    Grid grid;
-    Position positionInstance = new Position(0, 0);
-
-    double rowCount, colCount, height, width;
+public class FiresEntities extends EntitiesManager{
 
     public FiresEntities(Grid grid){
-        this.grid = grid;
-        this.rowCount = grid.getRowCount();
-        this.colCount = grid.getColCount();
-        this.height = grid.getHeight();
-        this.width = grid.getWidth();
+        super(grid);
     }
-
     @Override
     public void paint(int row, int col) {
         grid.getGraphicsContext2D().setFill(Color.RED);
@@ -29,4 +20,5 @@ public class FiresEntities implements Entities{
     public List<Position> activateFire(Position position) {
         return positionInstance.nextPosition(position, rowCount, colCount);
     }
+
 }

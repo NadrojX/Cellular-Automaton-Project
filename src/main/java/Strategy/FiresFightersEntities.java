@@ -6,17 +6,10 @@ import javafx.scene.paint.Color;
 
 import java.util.*;
 
-public class FiresFightersEntities implements Entities{
-    Grid grid;
-    Position positionInstance = new Position(0, 0);
-    double rowCount, colCount, height, width;
+public class FiresFightersEntities extends EntitiesManager{
 
     public FiresFightersEntities(Grid grid){
-        this.grid = grid;
-        this.rowCount = grid.getRowCount();
-        this.colCount = grid.getColCount();
-        this.height = grid.getHeight();
-        this.width = grid.getWidth();
+        super(grid);
     }
 
     @Override

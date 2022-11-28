@@ -1,8 +1,6 @@
 package App;
 
-import Strategy.Entities;
-import Strategy.FiresEntities;
-import Strategy.FiresFightersEntities;
+import Strategy.EntitiesContext;
 
 import java.util.*;
 
@@ -30,12 +28,12 @@ public class Model {
   }
 
   public void activation() {
-    FiresFightersEntities ffs = new FiresFightersEntities(grid);
-    FiresEntities fs = new FiresEntities(grid);
+    EntitiesContext ffs = new EntitiesContext(grid, "ffs");
+    EntitiesContext fs = new EntitiesContext(grid, "fs");
 
     ffNewPositions = new ArrayList<>();
     for (Position ff : firefighters) {
-      Position newPosition = ffs.activateFirefighter(ff, fires);
+      Position newPosition = ffs.activate(ff, fires).get(0);
       grid.paint(ff.row(), ff.col());
       ffs.paint(newPosition.row(), newPosition.col());
       ffNewPositions.add(newPosition);
@@ -44,7 +42,7 @@ public class Model {
     if (step % 2 == 0) {
       List<Position> newFires = new ArrayList<>();
       for (Position fire : fires) {
-        newFires.addAll(fs.activateFire(fire));
+        newFires.addAll(fs.activate(fire,fires));
       }
       for (Position newFire : newFires)
         fs.paint(newFire.row(), newFire.col());
