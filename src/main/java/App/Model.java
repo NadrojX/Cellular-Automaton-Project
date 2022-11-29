@@ -1,6 +1,6 @@
 package App;
 
-import Strategy.EntitiesContext;
+import Entities.EntitiesContext;
 
 import java.util.*;
 

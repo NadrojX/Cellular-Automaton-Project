@@ -1,4 +1,4 @@
-package Strategy;
+package Entities;
 
 import App.Position;
 
