@@ -41,8 +41,8 @@ public class EntitiesContext {
                 return Collections.singletonList(entitiesManager.activateFirefighter(position, fires));
             }
             case "mffs" -> {
-                Position position1 = entitiesManager.activateMotorizedFirefighter(position, fires);
-                return Collections.singletonList(entitiesManager.activateMotorizedFirefighter(position1, fires));
+                Position position1 = entitiesManager.activateFirefighter(position, fires);
+                return Collections.singletonList(entitiesManager.activateFirefighter(position1, fires));
             }
         }
         return null;

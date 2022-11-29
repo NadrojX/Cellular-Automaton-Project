@@ -13,11 +13,11 @@ public class MotorizedFFEntities extends EntitiesManager{
     }
     @Override
     public void paint(int row, int col) {
-        grid.getGraphicsContext2D().setFill(Color.CYAN);
+        grid.getGraphicsContext2D().setFill(Color.DARKCYAN);
         grid.getGraphicsContext2D().fillOval(row*height/rowCount,col*width/colCount,height/rowCount,width/colCount);
     }
 
-    public Position activateMotorizedFirefighter(Position position, Set<Position> fires) {
+    public Position activateFirefighter(Position position, Set<Position> fires) {
         Position randomPosition = aStepTowardFire(position, fires);
         List<Position> nextFires = positionInstance.nextPosition(randomPosition, colCount, rowCount).stream().filter(fires::contains).toList();
         extinguish(randomPosition, fires);
