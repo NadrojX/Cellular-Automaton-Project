@@ -26,12 +26,17 @@ public class EntitiesContext {
                 entitiesManager = new MotorizedFFEntities(grid);
                 this.strategy = strategy;
             }
+            case "clouds" -> {
+                entitiesManager = new CloudsEntity(grid);
+                this.strategy = strategy;
+            }
         }
     }
 
     public void paint(int row, int col){
         entitiesManager.paint(row, col);
     }
+
     public List<Position> activate(Position position, Set<Position> fires){
         switch (strategy){
             case "fs" -> {
@@ -43,6 +48,9 @@ public class EntitiesContext {
             case "mffs" -> {
                 Position position1 = entitiesManager.activateFirefighter(position, fires);
                 return Collections.singletonList(entitiesManager.activateFirefighter(position1, fires));
+            }
+            case "clouds" -> {
+                return Collections.singletonList(entitiesManager.activateClouds(position, fires));
             }
         }
         return null;

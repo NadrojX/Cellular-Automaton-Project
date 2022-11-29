@@ -11,8 +11,10 @@ public class Model {
   List<Position> firefighters = new ArrayList<>();
   List<Position> motorizedFirefighters = new ArrayList<>();
   Set<Position> fires = new HashSet<>();
+  List<Position> clouds = new ArrayList<>();
   List<Position> ffNewPositions;
   List<Position> mffNewPositions;
+  List<Position> cloudsNewPositions;
   Position positionInstance = new Position(0, 0);
   int step = 0;
 
@@ -29,15 +31,19 @@ public class Model {
       firefighters.add(positionInstance.randomPosition(rowCount, colCount));
     for (int index = 0; index < 2; index++)
       motorizedFirefighters.add(positionInstance.randomPosition(rowCount, colCount));
+    for (int index = 0; index < 2; index++)
+      clouds.add(positionInstance.randomPosition(rowCount, colCount));
   }
 
   public void activation() {
     EntitiesContext ffs = new EntitiesContext(grid, "ffs");
     EntitiesContext fs = new EntitiesContext(grid, "fs");
     EntitiesContext mffs = new EntitiesContext(grid, "mffs");
+    EntitiesContext cl = new EntitiesContext(grid, "clouds");
 
     ffNewPositions = new ArrayList<>();
     mffNewPositions = new ArrayList<>();
+    cloudsNewPositions = new ArrayList<>();
 
     for (Position ff : firefighters) {
       Position newPosition = ffs.activate(ff, fires).get(0);
@@ -56,6 +62,15 @@ public class Model {
     }
 
     motorizedFirefighters = mffNewPositions;
+
+    for (Position cloud : clouds) {
+      Position newPosition = cl.activate(cloud, fires).get(0);
+      grid.paint(cloud.row(), cloud.col());
+      cl.paint(newPosition.row(), newPosition.col());
+      cloudsNewPositions.add(newPosition);
+    }
+
+    clouds = cloudsNewPositions;
 
     if (step % 2 == 0) {
       List<Position> newFires = new ArrayList<>();

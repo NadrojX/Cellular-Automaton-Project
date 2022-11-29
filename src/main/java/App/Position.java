@@ -2,6 +2,7 @@ package App;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public record Position(int row, int col) {
 
@@ -15,6 +16,23 @@ public record Position(int row, int col) {
         if (position.col() > 0) list.add(new Position(position.row(), position.col() - 1));
         if (position.row() < rowCount - 1) list.add(new Position(position.row() + 1, position.col()));
         if (position.col() < colCount - 1) list.add(new Position(position.row(), position.col() + 1));
+        return list;
+    }
+
+    public List<Position> nextRandomPosition(Position position) {
+        List<Position> list = new ArrayList<>();
+        Random random = new Random();
+        int number = random.nextInt(8);
+        switch (number) {
+            case 0 -> list.add(new Position(position.row - 1, position.col + 1));
+            case 1 -> list.add(new Position(position.row + 1, position.col - 1));
+            case 2 -> list.add(new Position(position.row + 1, position.col + 1));
+            case 3 -> list.add(new Position(position.row - 1, position.col - 1));
+            case 4 -> list.add(new Position(position.row - 1, position.col));
+            case 5 -> list.add(new Position(position.row, position.col - 1));
+            case 6 -> list.add(new Position(position.row + 1, position.col));
+            case 7 -> list.add(new Position(position.row, position.col + 1));
+        }
         return list;
     }
 }
