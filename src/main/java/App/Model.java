@@ -28,11 +28,11 @@ public class Model {
   }
 
   public void initialisation(int fireNumber, int fireFighterNumber) {
-    for (int index = 0; index < fireNumber; index++)
+    for (int index = 0; index < 16; index++)
       fires.add(positionInstance.randomPosition(rowCount, colCount));
-    for (int index = 0; index < fireFighterNumber; index++)
+    for (int index = 0; index < 0; index++)
       firefighters.add(positionInstance.randomPosition(rowCount, colCount));
-    for (int index = 0; index < 2; index++)
+    for (int index = 0; index < 10; index++)
       motorizedFirefighters.add(positionInstance.randomPosition(rowCount, colCount));
     for (int index = 0; index < 2; index++)
       clouds.add(positionInstance.randomPosition(rowCount, colCount));
@@ -51,6 +51,12 @@ public class Model {
     ffNewPositions = new ArrayList<>();
     mffNewPositions = new ArrayList<>();
     cloudsNewPositions = new ArrayList<>();
+
+    for (Position mountain : mountains) {
+      Position newPosition = mount.activate(mountain);
+      grid.paint(mountain.row(), mountain.col());
+      mount.paint(newPosition.row(), newPosition.col());
+    }
 
     for (Position ff : firefighters) {
       Position newPosition = ffs.activate(ff, fires).get(0);
@@ -79,17 +85,15 @@ public class Model {
 
     clouds = cloudsNewPositions;
 
-    for (Position mountain : mountains) {
-      Position newPosition = mount.activate(mountain);
-      grid.paint(mountain.row(), mountain.col());
-      mount.paint(newPosition.row(), newPosition.col());
-    }
-
-
     if (step % 2 == 0) {
       List<Position> newFires = new ArrayList<>();
       for (Position fire : fires) {
         newFires.addAll(fs.activate(fire,fires));
+        for (int i = 0; i < newFires.size(); i++) {
+            if (mountains.contains(newFires.get(i))) {
+              newFires.remove(i);
+            }
+        }
       }
       for (Position newFire : newFires)
         fs.paint(newFire.row(), newFire.col());
