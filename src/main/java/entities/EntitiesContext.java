@@ -30,6 +30,10 @@ public class EntitiesContext {
                 entitiesManager = new CloudsEntity(grid);
                 this.strategy = strategy;
             }
+            case "virus" -> {
+                entitiesManager = new VirusEntities(grid);
+                this.strategy = strategy;
+            }
         }
     }
 
@@ -51,6 +55,9 @@ public class EntitiesContext {
             }
             case "clouds" -> {
                 return Collections.singletonList(entitiesManager.activateClouds(position, fires));
+            }
+            case "virus" -> {
+                return Collections.singletonList(entitiesManager.activateVirus(position));
             }
         }
         return null;

@@ -32,4 +32,7 @@ public abstract class EntitiesManager implements Entities{
         return null;
     }
 
+    public  Position activateVirus(Position position) {
+        return null;
+    }
 }

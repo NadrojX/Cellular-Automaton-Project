@@ -1,27 +1,39 @@
 package app;
 
-import model.ModelFires;
+import model.ModelFactory;
+import model.ModelFire;
+import model.ModelVirus;
 
 public class ModelUse {
   Grid grid;
   double colCount;
   double rowCount;
 
-  ModelFires modelFires;
+  ModelFactory modelFire;
+  ModelFactory modelVirus;
 
   public ModelUse(Grid grid) {
     this.grid = grid;
     colCount = grid.colCount;
     rowCount = grid.rowCount;
-    modelFires = new ModelFires(grid);
+    modelFire = new ModelFire(grid);
+    modelVirus = new ModelVirus(grid);
   }
 
-  public void initialisation(int fireNumber, int fireFighterNumber, int motorizedFireFighterNumber, int cloudsNumber, int mountainsNumber, int rockNumber) {
-    modelFires.initialisation(fireNumber, fireFighterNumber, motorizedFireFighterNumber, cloudsNumber, mountainsNumber, rockNumber);
+  public void initialisationFire(int fireNumber, int fireFighterNumber, int motorizedFireFighterNumber, int cloudsNumber, int mountainsNumber, int rockNumber) {
+    modelFire.initialisation(fireNumber, fireFighterNumber, motorizedFireFighterNumber, cloudsNumber, mountainsNumber, rockNumber);
   }
 
-  public void activation() {
-    modelFires.activation();
+  public void initialisationVirus(int virusNumber){
+    modelVirus.initialisation(virusNumber);
+  }
+
+  public void activationFire() {
+    modelFire.activation();
+  }
+
+  public void activationVirus() {
+    modelVirus.activation();
   }
 
 }

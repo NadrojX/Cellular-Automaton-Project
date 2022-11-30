@@ -17,4 +17,6 @@ public abstract class ModelFactory implements Model{
 
     }
 
+    public void  initialisation(int virusNumber){}
+
 }

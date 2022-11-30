@@ -21,17 +21,20 @@ public class Grid extends Canvas{
         setFocusTraversable(true);
         setOnMousePressed(this::mousePressed);
         modelUse = new ModelUse(this);
-        modelUse.initialisation(3,8, 2, 2, 4, 2);
+        modelUse.initialisationFire(3,8, 2, 2, 4, 2);
+        //modelUse.initialisationVirus(2);
     }
 
     public void restart(MouseEvent mouseEvent){
         modelUse = new ModelUse(this);
-        modelUse.initialisation(3,6, 1, 2, 4, 2);
+        modelUse.initialisationFire(3,6, 1, 2, 4, 2);
+        //modelUse.initialisationVirus(4);
         getGraphicsContext2D().clearRect(0,0,width, height);
         repaint();
     }
     private void mousePressed(MouseEvent mouseEvent) {
-        modelUse.activation();
+        modelUse.activationFire();
+        //modelUse.activationVirus();
         repaint();
     }
 

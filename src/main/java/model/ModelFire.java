@@ -10,7 +10,7 @@ import ground.Rock;
 
 import java.util.*;
 
-public class ModelFires extends ModelFactory {
+public class ModelFire extends ModelFactory {
 
     List<Position> firefighters = new ArrayList<>();
     List<Position> motorizedFirefighters = new ArrayList<>();
@@ -27,7 +27,7 @@ public class ModelFires extends ModelFactory {
     Random random = new Random();
     int step = 0;
 
-    public ModelFires(Grid grid) {
+    public ModelFire(Grid grid) {
         super(grid);
     }
 
