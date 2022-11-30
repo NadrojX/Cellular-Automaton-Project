@@ -1,6 +1,7 @@
 package Ground;
 
 import App.Grid;
+import App.Position;
 import javafx.scene.paint.Color;
 
 public class Mountains extends GroundFactory implements Grounds{
@@ -14,5 +15,11 @@ public class Mountains extends GroundFactory implements Grounds{
         grid.getGraphicsContext2D().setFill(Color.BROWN);
         grid.getGraphicsContext2D().fillOval(row*height/rowCount,col*width/colCount,height/rowCount,width/colCount);
     }
+
+    @Override
+    public Position activate(Position position) {
+        return position;
+    }
+
 
 }

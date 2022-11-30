@@ -1,6 +1,8 @@
 package App;
 
 import Entities.EntitiesContext;
+import Ground.Grounds;
+import Ground.Mountains;
 
 import java.util.*;
 
@@ -12,6 +14,7 @@ public class Model {
   List<Position> motorizedFirefighters = new ArrayList<>();
   Set<Position> fires = new HashSet<>();
   List<Position> clouds = new ArrayList<>();
+  Set<Position> mountains = new HashSet<>();
   List<Position> ffNewPositions;
   List<Position> mffNewPositions;
   List<Position> cloudsNewPositions;
@@ -33,6 +36,8 @@ public class Model {
       motorizedFirefighters.add(positionInstance.randomPosition(rowCount, colCount));
     for (int index = 0; index < 2; index++)
       clouds.add(positionInstance.randomPosition(rowCount, colCount));
+    for (int index = 0; index < 6; index++)
+      mountains.add(positionInstance.randomPosition(rowCount, colCount));
   }
 
   public void activation() {
@@ -40,6 +45,8 @@ public class Model {
     EntitiesContext fs = new EntitiesContext(grid, "fs");
     EntitiesContext mffs = new EntitiesContext(grid, "mffs");
     EntitiesContext cl = new EntitiesContext(grid, "clouds");
+
+    Grounds mount = new Mountains(grid);
 
     ffNewPositions = new ArrayList<>();
     mffNewPositions = new ArrayList<>();
@@ -71,6 +78,13 @@ public class Model {
     }
 
     clouds = cloudsNewPositions;
+
+    for (Position mountain : mountains) {
+      Position newPosition = mount.activate(mountain);
+      grid.paint(mountain.row(), mountain.col());
+      mount.paint(newPosition.row(), newPosition.col());
+    }
+
 
     if (step % 2 == 0) {
       List<Position> newFires = new ArrayList<>();
