@@ -1,6 +1,6 @@
-package Entities;
+package entities;
 
-import App.Position;
+import app.Position;
 
 import java.util.Set;
 

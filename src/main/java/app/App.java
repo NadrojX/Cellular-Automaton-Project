@@ -1,4 +1,4 @@
-package App;
+package app;
 
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -43,7 +43,7 @@ public class App extends Application {
         ScheduledThreadPoolExecutor threadPoolExecutor = new ScheduledThreadPoolExecutor(1);
         threadPoolExecutor.scheduleAtFixedRate(() -> {
             if(!isInPause) {
-                grid.model.activation();
+                grid.modelUse.activation();
                 grid.repaint();
             }
         }, 0, 50 , TimeUnit.MILLISECONDS);

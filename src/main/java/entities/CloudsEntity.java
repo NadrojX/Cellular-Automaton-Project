@@ -1,35 +1,37 @@
-package Entities;
+package entities;
 
-import App.Grid;
-import App.Position;
+import app.Grid;
+import app.Position;
 import javafx.scene.paint.Color;
 
 import java.util.*;
 
-public class MotorizedFFEntities extends EntitiesManager{
+public class CloudsEntity extends EntitiesManager implements ExtinguishEntities{
 
-    public MotorizedFFEntities(Grid grid) {
+    public CloudsEntity(Grid grid) {
         super(grid);
     }
+
     @Override
     public void paint(int row, int col) {
-        grid.getGraphicsContext2D().setFill(Color.DARKCYAN);
+        grid.getGraphicsContext2D().setFill(Color.GRAY);
         grid.getGraphicsContext2D().fillOval(row*height/rowCount,col*width/colCount,height/rowCount,width/colCount);
     }
 
-    public Position activateFirefighter(Position position, Set<Position> fires) {
+    public Position activateClouds(Position position, Set<Position> fires) {
         Position randomPosition = aStepTowardFire(position, fires);
-        List<Position> nextFires = positionInstance.nextPosition(randomPosition, colCount, rowCount).stream().filter(fires::contains).toList();
+        List<Position> nextFires = positionInstance.nextRandomPosition(randomPosition).stream().filter(fires::contains).toList();
         extinguish(randomPosition, fires);
         for (Position fire : nextFires)
             extinguish(fire, fires);
         return randomPosition;
     }
 
+    @Override
     public Position aStepTowardFire(Position position, Set<Position> fires) {
         Set<Position> seen = new HashSet<>();
         HashMap<Position, Position> firstMove = new HashMap<>();
-        Queue<Position> toVisit = new LinkedList<>(positionInstance.nextPosition(position, colCount, rowCount));
+        Queue<Position> toVisit = new LinkedList<>(positionInstance.nextRandomPosition(position));
         for (Position initialMove : toVisit)
             firstMove.put(initialMove, initialMove);
         while (!toVisit.isEmpty()) {
@@ -46,9 +48,9 @@ public class MotorizedFFEntities extends EntitiesManager{
         return position;
     }
 
+    @Override
     public void extinguish(Position position, Set<Position> fires) {
         fires.remove(position);
         grid.paint(position.row(), position.col());
     }
-
 }

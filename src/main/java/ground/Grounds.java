@@ -1,6 +1,6 @@
-package Ground;
+package ground;
 
-import App.Position;
+import app.Position;
 
 public interface Grounds {
 

@@ -1,4 +1,4 @@
-package App;
+package app;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseEvent;
@@ -9,7 +9,7 @@ public class Grid extends Canvas{
     double height;
     double colCount;
     double rowCount;
-    Model model;
+    ModelUse modelUse;
 
 
     public Grid(int width, int height, int colCount, int rowCount) {
@@ -20,18 +20,18 @@ public class Grid extends Canvas{
         this.rowCount = rowCount;
         setFocusTraversable(true);
         setOnMousePressed(this::mousePressed);
-        model = new Model(this);
-        model.initialisation(3,8);
+        modelUse = new ModelUse(this);
+        modelUse.initialisation(3,8, 2, 2, 4, 2);
     }
 
     public void restart(MouseEvent mouseEvent){
-        model = new Model(this);
-        model.initialisation(3,6);
+        modelUse = new ModelUse(this);
+        modelUse.initialisation(3,6, 1, 2, 4, 2);
         getGraphicsContext2D().clearRect(0,0,width, height);
         repaint();
     }
     private void mousePressed(MouseEvent mouseEvent) {
-        model.activation();
+        modelUse.activation();
         repaint();
     }
 

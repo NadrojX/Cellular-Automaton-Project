@@ -1,7 +1,7 @@
-package Entities;
+package entities;
 
-import App.Grid;
-import App.Position;
+import app.Grid;
+import app.Position;
 
 import java.util.Collections;
 import java.util.List;

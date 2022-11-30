@@ -1,7 +1,7 @@
-package Ground;
+package ground;
 
-import App.Grid;
-import App.Position;
+import app.Grid;
+import app.Position;
 import javafx.scene.paint.Color;
 
 public class Road extends GroundFactory{
