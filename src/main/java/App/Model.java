@@ -3,6 +3,7 @@ package App;
 import Entities.EntitiesContext;
 import Ground.Grounds;
 import Ground.Mountains;
+import Ground.Road;
 
 import java.util.*;
 
@@ -15,10 +16,14 @@ public class Model {
   Set<Position> fires = new HashSet<>();
   List<Position> clouds = new ArrayList<>();
   Set<Position> mountains = new HashSet<>();
+  Set<Position> roads = new HashSet<>();
   List<Position> ffNewPositions;
   List<Position> mffNewPositions;
   List<Position> cloudsNewPositions;
   Position positionInstance = new Position(0, 0);
+
+  Random random = new Random();
+  Random random2 = new Random();
   int step = 0;
 
   public Model(Grid grid) {
@@ -28,16 +33,42 @@ public class Model {
   }
 
   public void initialisation(int fireNumber, int fireFighterNumber) {
-    for (int index = 0; index < 16; index++)
+    for (int index = 0; index < 2; index++)
       fires.add(positionInstance.randomPosition(rowCount, colCount));
     for (int index = 0; index < 0; index++)
       firefighters.add(positionInstance.randomPosition(rowCount, colCount));
-    for (int index = 0; index < 10; index++)
+    for (int index = 0; index < 0; index++)
       motorizedFirefighters.add(positionInstance.randomPosition(rowCount, colCount));
     for (int index = 0; index < 2; index++)
       clouds.add(positionInstance.randomPosition(rowCount, colCount));
     for (int index = 0; index < 6; index++)
       mountains.add(positionInstance.randomPosition(rowCount, colCount));
+
+    for (int index = 0; index < 2; index++) {
+      roads.add(positionInstance.randomPosition(rowCount, colCount));
+      int choose = random.nextInt(2);
+      switch (choose) {
+        case 0 -> {
+          int sizeRoad = random2.nextInt(6);
+          for (int i = 0; i < sizeRoad; i++) {
+            for (int j = 0; j < roads.size(); j++) {
+              if(j > grid.rowCount) continue;
+              roads.add(new Position((roads.stream().toList().get(j).row() + i), roads.stream().toList().get(j).col()));
+            }
+          }
+        }
+        case 1 -> {
+          int sizeRoad2 = random2.nextInt(6);
+          for (int k = 0; k < sizeRoad2; k++) {
+            for (int l = 0; l < roads.size(); l++) {
+              if(l > grid.colCount) continue;
+              roads.add(new Position((roads.stream().toList().get(l).row()), roads.stream().toList().get(l).col() - l));
+            }
+          }
+        }
+      }
+    }
+
   }
 
   public void activation() {
@@ -47,6 +78,7 @@ public class Model {
     EntitiesContext cl = new EntitiesContext(grid, "clouds");
 
     Grounds mount = new Mountains(grid);
+    Grounds road = new Road(grid);
 
     ffNewPositions = new ArrayList<>();
     mffNewPositions = new ArrayList<>();
@@ -56,6 +88,12 @@ public class Model {
       Position newPosition = mount.activate(mountain);
       grid.paint(mountain.row(), mountain.col());
       mount.paint(newPosition.row(), newPosition.col());
+    }
+
+    for (Position roa : roads) {
+      Position newPosition = road.activate(roa);
+      grid.paint(roa.row(), roa.col());
+      road.paint(newPosition.row(), newPosition.col());
     }
 
     for (Position ff : firefighters) {
@@ -90,7 +128,7 @@ public class Model {
       for (Position fire : fires) {
         newFires.addAll(fs.activate(fire,fires));
         for (int i = 0; i < newFires.size(); i++) {
-            if (mountains.contains(newFires.get(i))) {
+            if (mountains.contains(newFires.get(i)) || roads.contains(newFires.get(i))) {
               newFires.remove(i);
             }
         }

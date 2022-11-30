@@ -1,7 +1,7 @@
 package Ground;
 
 import App.Grid;
-public abstract class GroundFactory {
+public abstract class GroundFactory implements Grounds{
     Grid grid;
     double rowCount, colCount, height, width;
 
