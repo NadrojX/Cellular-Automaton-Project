@@ -8,6 +8,8 @@ import java.util.*;
 
 public class FiresFightersEntities extends EntitiesManager implements ExtinguishEntities{
 
+    Set<Position> mountains;
+
     public FiresFightersEntities(Grid grid){
         super(grid);
     }
