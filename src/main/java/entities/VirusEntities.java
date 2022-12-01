@@ -2,10 +2,8 @@ package entities;
 
 import app.Grid;
 import app.Position;
+
 import javafx.scene.paint.Color;
-
-import java.util.*;
-
 
 public class VirusEntities extends EntitiesManager {
 
@@ -20,8 +18,8 @@ public class VirusEntities extends EntitiesManager {
     }
 
     @Override
-    public Position activateVirus(Position position) {
-        return position;
+    public Position activateVirus() {
+        return positionInstance.randomPosition(rowCount, colCount);
     }
 
 }

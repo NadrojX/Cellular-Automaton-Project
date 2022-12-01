@@ -34,6 +34,10 @@ public class EntitiesContext {
                 entitiesManager = new VirusEntities(grid);
                 this.strategy = strategy;
             }
+            case "people" -> {
+                entitiesManager = new PeoplesEntities(grid);
+                this.strategy = strategy;
+            }
         }
     }
 
@@ -57,7 +61,10 @@ public class EntitiesContext {
                 return Collections.singletonList(entitiesManager.activateClouds(position, fires));
             }
             case "virus" -> {
-                return Collections.singletonList(entitiesManager.activateVirus(position));
+                return Collections.singletonList(entitiesManager.activateVirus());
+            }
+            case "people" -> {
+                return Collections.singletonList(entitiesManager.activatePeople(position));
             }
         }
         return null;

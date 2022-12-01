@@ -32,7 +32,11 @@ public abstract class EntitiesManager implements Entities{
         return null;
     }
 
-    public  Position activateVirus(Position position) {
+    public  Position activateVirus() {
+        return null;
+    }
+
+    public Position activatePeople(Position position) {
         return null;
     }
 }
