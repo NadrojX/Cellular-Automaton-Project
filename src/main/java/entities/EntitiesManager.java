@@ -41,6 +41,8 @@ public abstract class EntitiesManager implements Entities{
         return null;
     }
 
+    public Position activateHealer(Position position, Set<Position> virus) { return null; }
+
     public List<Position> getNeighbor(Position position){
         List<Position> neighbor = new ArrayList<>();
         neighbor.add(new Position(position.row() + 1, position.col()));

@@ -5,16 +5,12 @@ import app.Position;
 import app.SingletonRandom;
 import entities.EntitiesContext;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ModelVirus extends ModelFactory{
 
-    Set<Position> t = new HashSet<>();
+    Set<Position> virusSet = new HashSet<>();
     List<Position> virusList = new ArrayList<>();
-
     List<Position> peopleList = new ArrayList<>();
     List<Position> healerList = new ArrayList<>();
     List<Position> sicknessPeopleList = new ArrayList<>();
@@ -57,9 +53,11 @@ public class ModelVirus extends ModelFactory{
 
         virusMutation();
 
+        if(virusList.isEmpty() && sicknessPeopleList.isEmpty()) return;
+
         for (Position virus : virusList) {
             infectionVirus(virusEntities, virus);
-            Position newPosition = virusEntities.activate(virus, t).get(0);
+            Position newPosition = virusEntities.activate(virus, virusSet).get(0);
             grid.paint(virus.row(), virus.col());
             virusEntities.paint(newPosition.row(), newPosition.col());
             newVirusPositionList.add(newPosition);
@@ -69,7 +67,7 @@ public class ModelVirus extends ModelFactory{
 
         for(Position people : peopleList){
             infectionPeople(peopleEntities, people);
-            Position newPosition = peopleEntities.activate(people, t).get(0);
+            Position newPosition = peopleEntities.activate(people, virusSet).get(0);
             grid.paint(people.row(), people.col());
             peopleEntities.paint(newPosition.row(), newPosition.col());
             newPeoplePositionList.add(newPosition);
@@ -77,24 +75,29 @@ public class ModelVirus extends ModelFactory{
 
         peopleList = newPeoplePositionList;
 
-        for(Position healer : healerList){
-            Position newPosition = peopleEntities.activate(healer, t).get(0);
-            grid.paint(healer.row(), healer.col());
-            healerEntities.paint(newPosition.row(), newPosition.col());
-            newHealerPositionList.add(newPosition);
-        }
 
-        healerList = newHealerPositionList;
+        virusSet.clear();
+        virusSet.addAll(sicknessPeopleList);
 
         for(Position sicknessPeople : sicknessPeopleList){
-            Position newPosition = peopleEntities.activate(sicknessPeople, t).get(0);
+            Position newPosition = peopleEntities.activate(sicknessPeople, virusSet).get(0);
             grid.paint(sicknessPeople.row(), sicknessPeople.col());
             sicknessPeopleEntities.paint(newPosition.row(), newPosition.col());
             newSicknessPeoplePositionList.add(newPosition);
-            heal(sicknessPeople);
+            naturalHeal(sicknessPeople);
         }
 
         sicknessPeopleList = newSicknessPeoplePositionList;
+
+        for(Position healer : healerList){
+            Position newPosition = healerEntities.activate(healer, virusSet).get(0);
+            grid.paint(healer.row(), healer.col());
+            healerEntities.paint(newPosition.row(), newPosition.col());
+            newHealerPositionList.add(newPosition);
+            healDoctor(healerEntities, healer);
+        }
+
+        healerList = newHealerPositionList;
 
         step++;
     }
@@ -121,9 +124,9 @@ public class ModelVirus extends ModelFactory{
 
     private void infectionVirus(EntitiesContext infecter, Position position){
         List<Position> neighbors = infecter.getNeighbor(position);
-        int infectionChoice = random.getRandomNumber(2);
+        int infectionChoice = random.getRandomNumber(5);
 
-        if (infectionChoice == 0) {
+        if (infectionChoice == 2) {
             for (Position neighbor : neighbors) {
                 if (peopleList.contains(neighbor)) {
                     grid.paint(neighbor.row(), neighbor.col());
@@ -132,12 +135,13 @@ public class ModelVirus extends ModelFactory{
                 }
             }
         }
+
     }
 
     private void infectionPeople(EntitiesContext infecter, Position position){
         List<Position> neighbors = infecter.getNeighbor(position);
 
-        int infectionChoice = random.getRandomNumber(2);
+        int infectionChoice = random.getRandomNumber(10);
 
         if (infectionChoice == 0) {
             for (Position neighbor : neighbors) {
@@ -151,12 +155,26 @@ public class ModelVirus extends ModelFactory{
 
     }
 
-    private void heal(Position position){
-        if(step % 3 == 0 && step != 0){
+    private void naturalHeal(Position position){
+        if(step % 2 == 0 && step != 0){
             grid.paint(position.col(), position.row());
             peopleList.add(position);
             newSicknessPeoplePositionList.remove(position);
         }
+    }
+
+    private void healDoctor(EntitiesContext healer, Position position){
+        List<Position> neighbors = healer.getNeighbor(position);
+
+        for (Position neighbor : neighbors) {
+            if (sicknessPeopleList.contains(neighbor)) {
+                grid.paint(neighbor.row(), neighbor.col());
+                sicknessPeopleList.remove(neighbor);
+                healerList.add(neighbor);
+            }
+        }
+
+
     }
 
 }

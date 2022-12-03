@@ -21,13 +21,13 @@ public class Grid extends Canvas{
         setOnMousePressed(this::mousePressed);
         modelUse = new ModelUse(this);
         //modelUse.initialisationFire(3,8, 2, 2, 4, 2);
-        modelUse.initialisationVirus(2, 5, 3);
+        modelUse.initialisationVirus(2, 7, 3);
     }
 
     public void restart(MouseEvent mouseEvent){
         modelUse = new ModelUse(this);
         //modelUse.initialisationFire(3,6, 1, 2, 4, 2);
-        modelUse.initialisationVirus(4, 5, 3);
+        modelUse.initialisationVirus(4, 7, 3);
         getGraphicsContext2D().clearRect(0,0,width, height);
         repaint();
     }

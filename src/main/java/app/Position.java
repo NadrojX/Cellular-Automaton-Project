@@ -10,6 +10,26 @@ public record Position(int row, int col) {
         return new Position((int) (Math.random() * rowCount), (int) (Math.random() * colCount));
     }
 
+    public Position nextStep(Position position){
+        SingletonRandom random = SingletonRandom.getInstance();
+
+        switch (random.getRandomNumber(4)) {
+            case 0 -> {
+                return new Position(position.row() - 1, position.col());
+            }
+            case 1 -> {
+                return new Position(position.row(), position.col() - 1);
+            }
+            case 2 -> {
+                return new Position(position.row() + 1, position.col());
+            }
+            case 3 -> {
+                return new Position(position.row(), position.col() + 1);
+            }
+        }
+        return position;
+    }
+
     public List<Position> nextPosition(Position position, double rowCount, double colCount) {
         List<Position> list = new ArrayList<>();
         if (position.row() > 0) list.add(new Position(position.row() - 1, position.col()));

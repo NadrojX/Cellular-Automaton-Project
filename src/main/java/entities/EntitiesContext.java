@@ -71,8 +71,11 @@ public class EntitiesContext {
             case "virus" -> {
                 return Collections.singletonList(entitiesManager.activateVirus());
             }
-            case "people", "healer", "sickness" -> {
+            case "people", "sickness" -> {
                 return Collections.singletonList(entitiesManager.activatePeople(position));
+            }
+            case "healer" -> {
+                return Collections.singletonList(entitiesManager.activateHealer(position, fires));
             }
         }
         return null;

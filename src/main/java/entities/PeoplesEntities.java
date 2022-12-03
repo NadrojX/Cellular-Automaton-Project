@@ -17,7 +17,7 @@ public class PeoplesEntities extends EntitiesManager{
     }
 
     public Position activatePeople(Position position){
-        return position;
+        return position.nextStep(position);
     }
 
 }
