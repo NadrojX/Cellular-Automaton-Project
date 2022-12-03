@@ -17,6 +17,6 @@ public class HealerEntities extends EntitiesManager{
     }
 
     public Position activatePeople(Position position){
-        return position;
+        return position.randomPosition(rowCount, colCount);
     }
 }
