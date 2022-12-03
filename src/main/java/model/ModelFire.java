@@ -3,6 +3,7 @@ package model;
 import app.Grid;
 import app.Position;
 import app.SingletonRandom;
+import app.configuration.ModelConfigurationFire;
 import entities.EntitiesContext;
 import ground.Grounds;
 import ground.Mountains;
@@ -32,16 +33,16 @@ public class ModelFire extends ModelFactory {
     }
 
     @Override
-    public void initialisation(int fireNumber, int fireFighterNumber, int motorizedFireFighterNumber, int cloudsNumber, int mountainsNumber, int rockNumber) {
-        for (int index = 0; index < fireNumber; index++)
+    public void initialisationFire(ModelConfigurationFire modelConfiguration) {
+        for (int index = 0; index < modelConfiguration.getFireNumber(); index++)
             firesSet.add(positionInstance.randomPosition(rowCount, colCount));
-        for (int index = 0; index < fireFighterNumber; index++)
+        for (int index = 0; index < modelConfiguration.getFireFighterNumber(); index++)
             firefightersList.add(positionInstance.randomPosition(rowCount, colCount));
-        for (int index = 0; index < motorizedFireFighterNumber; index++)
+        for (int index = 0; index < modelConfiguration.getMotorizedFireFighterNumber(); index++)
             motorizedFirefightersList.add(positionInstance.randomPosition(rowCount, colCount));
-        for (int index = 0; index < cloudsNumber; index++)
+        for (int index = 0; index < modelConfiguration.getCloudsNumber(); index++)
             cloudsList.add(positionInstance.randomPosition(rowCount, colCount));
-        for (int index = 0; index < mountainsNumber; index++)
+        for (int index = 0; index < modelConfiguration.getMountainsNumber(); index++)
             mountainsSet.add(positionInstance.randomPosition(rowCount, colCount));
 
         for (int index = 0; index < 2; index++) {
@@ -69,7 +70,7 @@ public class ModelFire extends ModelFactory {
             }
         }
 
-        for (int index = 0; index < rockNumber; index++)
+        for (int index = 0; index < modelConfiguration.getRockNumber(); index++)
             rocksSet.add(positionInstance.randomPosition(rowCount, colCount));
     }
 

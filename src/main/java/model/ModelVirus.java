@@ -3,6 +3,7 @@ package model;
 import app.Grid;
 import app.Position;
 import app.SingletonRandom;
+import app.configuration.ModelConfigurationVirus;
 import entities.EntitiesContext;
 
 import java.util.*;
@@ -30,12 +31,12 @@ public class ModelVirus extends ModelFactory{
         super(grid);
     }
 
-    public void initialisation(int virusNumber, int peopleNumber, int healerNumber){
-        for (int i = 0; i < virusNumber; i++)
+    public void initialisationVirus(ModelConfigurationVirus modelConfiguration){
+        for (int i = 0; i < modelConfiguration.getVirusNumber(); i++)
             virusList.add(positionInstance.randomPosition(rowCount, colCount));
-        for (int i = 0; i < peopleNumber; i++)
+        for (int i = 0; i < modelConfiguration.getPeopleNumber(); i++)
             peopleList.add(positionInstance.randomPosition(rowCount, colCount));
-        for (int i = 0; i < healerNumber; i++)
+        for (int i = 0; i < modelConfiguration.getHealerNumber(); i++)
             healerList.add(positionInstance.randomPosition(rowCount, colCount));
     }
 

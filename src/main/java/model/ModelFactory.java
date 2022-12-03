@@ -1,6 +1,8 @@
 package model;
 
 import app.Grid;
+import app.configuration.ModelConfigurationFire;
+import app.configuration.ModelConfigurationVirus;
 
 public abstract class ModelFactory implements Model{
 
@@ -13,8 +15,11 @@ public abstract class ModelFactory implements Model{
         this.colCount = grid.getColCount();
     }
 
-    public void initialisation(int fireNumber, int fireFighterNumber, int motorizedFireFighterNumber, int cloudsNumber, int mountainsNumber, int rockNumber){}
+    public void initialisationFire(ModelConfigurationFire modelConfiguration){
+    }
 
-    public void  initialisation(int virusNumber, int peopleNumber, int healerNumber){}
+    public void initialisationVirus(ModelConfigurationVirus modelConfigurationVirus){
+
+    }
 
 }
