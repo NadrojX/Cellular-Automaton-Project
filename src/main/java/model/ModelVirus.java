@@ -56,6 +56,7 @@ public class ModelVirus extends ModelFactory{
         virusMutation();
 
         for (Position virus : virusList) {
+            infection(virusEntities, virus);
             Position newPosition = virusEntities.activate(virus, t).get(0);
             grid.paint(virus.row(), virus.col());
             virusEntities.paint(newPosition.row(), newPosition.col());
@@ -65,6 +66,7 @@ public class ModelVirus extends ModelFactory{
         virusList = newVirusPositionList;
 
         for(Position people : peopleList){
+            infection(peopleEntities, people);
             Position newPosition = peopleEntities.activate(people, t).get(0);
             grid.paint(people.row(), people.col());
             peopleEntities.paint(newPosition.row(), newPosition.col());
@@ -109,6 +111,16 @@ public class ModelVirus extends ModelFactory{
                 }
             }
         }
+    }
 
+    private void infection(EntitiesContext infecter, Position position){
+        List<Position> neighbors = infecter.getNeighbor(position);
+        for(Position neighbor : neighbors){
+            if(peopleList.contains(neighbor)){
+                grid.paint(neighbor.row(), neighbor.col());
+                peopleList.remove(neighbor);
+                sicknessPeopleList.add(neighbor);
+            }
+        }
     }
 }

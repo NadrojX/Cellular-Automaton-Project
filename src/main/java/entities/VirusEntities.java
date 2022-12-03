@@ -5,6 +5,8 @@ import app.Position;
 
 import javafx.scene.paint.Color;
 
+import java.util.List;
+
 public class VirusEntities extends EntitiesManager {
 
     public VirusEntities(Grid grid) {
@@ -22,4 +24,8 @@ public class VirusEntities extends EntitiesManager {
         return positionInstance.randomPosition(rowCount, colCount);
     }
 
+    @Override
+    public List<Position> getNeighbor(Position position) {
+        return super.getNeighbor(position);
+    }
 }

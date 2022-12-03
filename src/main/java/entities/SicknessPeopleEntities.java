@@ -4,6 +4,8 @@ import app.Grid;
 import app.Position;
 import javafx.scene.paint.Color;
 
+import java.util.List;
+
 public class SicknessPeopleEntities extends EntitiesManager{
 
     public SicknessPeopleEntities(Grid grid) {
@@ -19,5 +21,10 @@ public class SicknessPeopleEntities extends EntitiesManager{
     @Override
     public Position activatePeople(Position position) {
         return position;
+    }
+
+    @Override
+    public List<Position> getNeighbor(Position position) {
+        return super.getNeighbor(position);
     }
 }

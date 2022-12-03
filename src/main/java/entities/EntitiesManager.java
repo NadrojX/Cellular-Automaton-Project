@@ -3,6 +3,7 @@ package entities;
 import app.Grid;
 import app.Position;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -39,4 +40,14 @@ public abstract class EntitiesManager implements Entities{
     public Position activatePeople(Position position) {
         return null;
     }
+
+    public List<Position> getNeighbor(Position position){
+        List<Position> neighbor = new ArrayList<>();
+        neighbor.add(new Position(position.row() + 1, position.col()));
+        neighbor.add(new Position(position.row() - 1, position.col()));
+        neighbor.add(new Position(position.row(), position.col() + 1));
+        neighbor.add(new Position(position.row(), position.col() - 1));
+        return neighbor;
+    }
+
 }

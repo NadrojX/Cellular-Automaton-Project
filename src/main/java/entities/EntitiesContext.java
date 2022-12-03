@@ -77,4 +77,9 @@ public class EntitiesContext {
         }
         return null;
     }
+
+    public List<Position> getNeighbor(Position position){
+        return entitiesManager.getNeighbor(position);
+    }
+
 }
