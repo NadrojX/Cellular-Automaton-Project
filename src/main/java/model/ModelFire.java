@@ -5,10 +5,7 @@ import app.Position;
 import app.SingletonRandom;
 import app.configuration.ModelConfigurationFire;
 import entities.EntitiesContext;
-import ground.Grounds;
-import ground.Mountains;
-import ground.Road;
-import ground.Rock;
+import ground.*;
 
 import java.util.*;
 
@@ -21,6 +18,9 @@ public class ModelFire extends ModelFactory {
     Set<Position> mountainsSet = new HashSet<>();
     Set<Position> roadsSet = new HashSet<>();
     Set<Position> rocksSet = new HashSet<>();
+    Set<Position> rocksBlock = new HashSet<>();
+
+    Set<Position> fireInWaiting = new HashSet<>();
     List<Position> ffNewPositions;
     List<Position> mffNewPositions;
     List<Position> cloudsNewPositions;
@@ -81,9 +81,9 @@ public class ModelFire extends ModelFactory {
         EntitiesContext motorizedFireFighterEntities = new EntitiesContext(grid, "motorizedFireFighter");
         EntitiesContext cloudsEntities = new EntitiesContext(grid, "clouds");
 
-        Grounds mountainsGround = new Mountains(grid);
-        Grounds roadGround = new Road(grid);
-        Grounds rockGround = new Rock(grid);
+        GroundFactory mountainsGround = new Mountains(grid);
+        GroundFactory roadGround = new Road(grid);
+        GroundFactory rockGround = new Rock(grid);
 
         ffNewPositions = new ArrayList<>();
         mffNewPositions = new ArrayList<>();
@@ -102,9 +102,10 @@ public class ModelFire extends ModelFactory {
         }
 
         for (Position rock : rocksSet) {
-            Position newPosition = mountainsGround.activate(rock);
+            Position newPosition = rockGround.activate(rock);
             grid.paint(rock.row(), rock.col());
             rockGround.paint(newPosition.row(), newPosition.col());
+            rocksBlock.addAll(rockGround.getNeighbor(rock));
         }
 
         for (Position fireFighter : firefightersList) {
@@ -142,12 +143,25 @@ public class ModelFire extends ModelFactory {
 
         cloudsList = cloudsNewPositions;
 
+        if(step % 4 == 0){
+            for(Position fireWaiting : fireInWaiting){
+                rocksBlock.remove(fireWaiting);
+            }
+        }
+
         if (step % 2 == 0) {
             List<Position> newFires = new ArrayList<>();
             for (Position fire : firesSet) {
                 newFires.addAll(firesEntities.activate(fire, firesSet));
                 for (int i = 0; i < newFires.size(); i++) {
                     if (mountainsSet.contains(newFires.get(i)) || roadsSet.contains(newFires.get(i))) {
+                        newFires.remove(newFires.get(i));
+                    }
+                }
+
+                for (int i = 0; i < newFires.size(); i++) {
+                    if (rocksBlock.contains(newFires.get(i))) {
+                        fireInWaiting.add(newFires.get(i));
                         newFires.remove(newFires.get(i));
                     }
                 }
