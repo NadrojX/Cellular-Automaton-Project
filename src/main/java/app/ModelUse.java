@@ -24,8 +24,8 @@ public class ModelUse {
     modelFire.initialisation(fireNumber, fireFighterNumber, motorizedFireFighterNumber, cloudsNumber, mountainsNumber, rockNumber);
   }
 
-  public void initialisationVirus(int virusNumber, int peopleNumber){
-    modelVirus.initialisation(virusNumber, peopleNumber);
+  public void initialisationVirus(int virusNumber, int peopleNumber, int healerNumber){
+    modelVirus.initialisation(virusNumber, peopleNumber, healerNumber);
   }
 
   public void activationFire() {

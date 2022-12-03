@@ -22,6 +22,7 @@ public class ModelVirus extends ModelFactory{
     List<Position> newVirusPositionList;
     List<Position> newPeoplePositionList;
     List<Position> newHealerPositionList;
+    List<Position> newSicknessPeoplePositionList;
 
     Position positionInstance = new Position(0, 0);
 
@@ -33,12 +34,12 @@ public class ModelVirus extends ModelFactory{
         super(grid);
     }
 
-    public void initialisation(int virusNumber, int peopleNumber){
+    public void initialisation(int virusNumber, int peopleNumber, int healerNumber){
         for (int i = 0; i < virusNumber; i++)
             virusList.add(positionInstance.randomPosition(rowCount, colCount));
         for (int i = 0; i < peopleNumber; i++)
             peopleList.add(positionInstance.randomPosition(rowCount, colCount));
-        for (int i = 0; i < peopleNumber; i++)
+        for (int i = 0; i < healerNumber; i++)
             healerList.add(positionInstance.randomPosition(rowCount, colCount));
     }
 
@@ -52,6 +53,7 @@ public class ModelVirus extends ModelFactory{
         newVirusPositionList = new ArrayList<>();
         newPeoplePositionList = new ArrayList<>();
         newHealerPositionList = new ArrayList<>();
+        newSicknessPeoplePositionList = new ArrayList<>();
 
         virusMutation();
 
@@ -88,7 +90,11 @@ public class ModelVirus extends ModelFactory{
             Position newPosition = peopleEntities.activate(sicknessPeople, t).get(0);
             grid.paint(sicknessPeople.row(), sicknessPeople.col());
             sicknessPeopleEntities.paint(newPosition.row(), newPosition.col());
+            newSicknessPeoplePositionList.add(newPosition);
+            heal(sicknessPeople);
         }
+
+        sicknessPeopleList = newSicknessPeoplePositionList;
 
         step++;
     }
@@ -115,12 +121,27 @@ public class ModelVirus extends ModelFactory{
 
     private void infection(EntitiesContext infecter, Position position){
         List<Position> neighbors = infecter.getNeighbor(position);
-        for(Position neighbor : neighbors){
-            if(peopleList.contains(neighbor)){
-                grid.paint(neighbor.row(), neighbor.col());
-                peopleList.remove(neighbor);
-                sicknessPeopleList.add(neighbor);
+
+        int infectionChoice = random.getRandomNumber(2);
+
+        if (infectionChoice == 0) {
+            for (Position neighbor : neighbors) {
+                if (peopleList.contains(neighbor)) {
+                    grid.paint(neighbor.row(), neighbor.col());
+                    peopleList.remove(neighbor);
+                    sicknessPeopleList.add(neighbor);
+                }
             }
         }
+
     }
+
+    private void heal(Position position){
+        if(step % 9 == 0 && step != 0){
+            grid.paint(position.col(), position.row());
+            peopleList.add(position);
+            newSicknessPeoplePositionList.remove(position);
+        }
+    }
+
 }
