@@ -4,6 +4,7 @@ import app.Grid;
 import app.Position;
 import javafx.scene.paint.Color;
 
+import java.util.Collections;
 import java.util.List;
 
 public class SicknessPeopleEntities extends EntitiesManager{
@@ -25,6 +26,6 @@ public class SicknessPeopleEntities extends EntitiesManager{
 
     @Override
     public List<Position> getNeighbor(Position position) {
-        return super.getNeighbor(position);
+        return Collections.singletonList(position);
     }
 }

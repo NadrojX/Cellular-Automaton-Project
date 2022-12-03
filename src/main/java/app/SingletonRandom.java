@@ -5,6 +5,7 @@ import java.util.Random;
 public class SingletonRandom {
 
     public static SingletonRandom instance;
+    Random random = new Random();;
 
     private SingletonRandom(){
 
@@ -16,7 +17,6 @@ public class SingletonRandom {
     }
 
     public int getRandomNumber(int sizeOfRandom){
-        Random random = new Random();
         return random.nextInt(sizeOfRandom);
     }
 

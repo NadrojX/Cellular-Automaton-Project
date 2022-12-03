@@ -18,9 +18,15 @@ public class HealerEntities extends EntitiesManager{
         grid.getGraphicsContext2D().fillRect(row * height / rowCount, col * width / colCount, height / rowCount, width / colCount);
     }
 
+    @Override
+    public List<Position> getNeighbor(Position position) {
+        return super.getNeighbor(position);
+    }
+
     public Position activateHealer(Position position, Set<Position> virus){
         return aStepTowardFire(position, virus);
     }
+
     private Position aStepTowardFire(Position position, Set<Position> virus) {
         Set<Position> seen = new HashSet<>();
         HashMap<Position, Position> firstMove = new HashMap<>();
@@ -40,5 +46,4 @@ public class HealerEntities extends EntitiesManager{
         }
         return position;
     }
-
 }
