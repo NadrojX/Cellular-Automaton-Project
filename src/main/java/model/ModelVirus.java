@@ -2,6 +2,7 @@ package model;
 
 import app.Grid;
 import app.Position;
+import app.SingletonRandom;
 import entities.EntitiesContext;
 
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ public class ModelVirus extends ModelFactory{
     Position positionInstance = new Position(0, 0);
 
     int step = 0;
+
+    int turn = 0;
 
     public ModelVirus(Grid grid) {
         super(grid);
@@ -50,6 +53,12 @@ public class ModelVirus extends ModelFactory{
         newPeoplePositionList = new ArrayList<>();
         newHealerPositionList = new ArrayList<>();
 
+        SingletonRandom random = SingletonRandom.getInstance();
+
+       /*if(turn == 5){
+            grid.paint(virusList.get(0).row(), virusList.get(0).col());
+            virusList.remove(random.getRandomNumber(virusList.size()));
+        } */
 
         for (Position virus : virusList) {
             Position newPosition = virusEntities.activate(virus, t).get(0);
@@ -84,6 +93,8 @@ public class ModelVirus extends ModelFactory{
             sicknessPeopleEntities.paint(newPosition.row(), newPosition.col());
         }
 
+
         step++;
+        turn ++;
     }
 }

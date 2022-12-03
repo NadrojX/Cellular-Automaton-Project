@@ -2,6 +2,7 @@ package model;
 
 import app.Grid;
 import app.Position;
+import app.SingletonRandom;
 import entities.EntitiesContext;
 import ground.Grounds;
 import ground.Mountains;
@@ -23,8 +24,7 @@ public class ModelFire extends ModelFactory {
     List<Position> mffNewPositions;
     List<Position> cloudsNewPositions;
     Position positionInstance = new Position(0, 0);
-
-    Random random = new Random();
+    SingletonRandom random = SingletonRandom.getInstance();
     int step = 0;
 
     public ModelFire(Grid grid) {
@@ -46,10 +46,10 @@ public class ModelFire extends ModelFactory {
 
         for (int index = 0; index < 2; index++) {
             roads.add(positionInstance.randomPosition(rowCount, colCount));
-            int choose = random.nextInt(2);
+            int choose = random.getRandomNumber(2);
             switch (choose) {
                 case 0 -> {
-                    int sizeRoad = random.nextInt(6);
+                    int sizeRoad = random.getRandomNumber(6);
                     for (int i = 0; i < sizeRoad; i++) {
                         for (int j = 0; j < roads.size(); j++) {
                             if(j > rowCount) continue;
@@ -58,7 +58,7 @@ public class ModelFire extends ModelFactory {
                     }
                 }
                 case 1 -> {
-                    int sizeRoad2 = random.nextInt(6);
+                    int sizeRoad2 = random.getRandomNumber(6);
                     for (int k = 0; k < sizeRoad2; k++) {
                         for (int l = 0; l < roads.size(); l++) {
                             if(l > colCount) continue;

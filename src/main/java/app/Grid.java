@@ -11,7 +11,6 @@ public class Grid extends Canvas{
     double rowCount;
     ModelUse modelUse;
 
-
     public Grid(int width, int height, int colCount, int rowCount) {
         super(width,height);
         this.width = width;
