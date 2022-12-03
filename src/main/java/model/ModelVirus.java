@@ -25,9 +25,9 @@ public class ModelVirus extends ModelFactory{
 
     Position positionInstance = new Position(0, 0);
 
-    int step = 0;
+    SingletonRandom random = SingletonRandom.getInstance();
 
-    int turn = 0;
+    int step = 0;
 
     public ModelVirus(Grid grid) {
         super(grid);
@@ -53,12 +53,7 @@ public class ModelVirus extends ModelFactory{
         newPeoplePositionList = new ArrayList<>();
         newHealerPositionList = new ArrayList<>();
 
-        SingletonRandom random = SingletonRandom.getInstance();
-
-       /*if(turn == 5){
-            grid.paint(virusList.get(0).row(), virusList.get(0).col());
-            virusList.remove(random.getRandomNumber(virusList.size()));
-        } */
+        virusMutation();
 
         for (Position virus : virusList) {
             Position newPosition = virusEntities.activate(virus, t).get(0);
@@ -93,8 +88,27 @@ public class ModelVirus extends ModelFactory{
             sicknessPeopleEntities.paint(newPosition.row(), newPosition.col());
         }
 
-
         step++;
-        turn ++;
+    }
+
+    private void virusMutation(){
+        int virusMutation = random.getRandomNumber(2);
+        switch (virusMutation) {
+            case 0 -> {
+                if(virusList.isEmpty()) return;
+                if(step % 5 == 0 && step != 0){
+                    int virusTarget = random.getRandomNumber(virusList.size());
+                    grid.paint(virusList.get(virusTarget).row(), virusList.get(virusTarget).col());
+                    virusList.remove(virusTarget);
+                }
+            }
+            case 1 -> {
+                if(virusList.isEmpty()) return;
+                if(step % 5 == 0 && step != 0){
+                    virusList.add(positionInstance.randomPosition(rowCount, colCount));
+                }
+            }
+        }
+
     }
 }
