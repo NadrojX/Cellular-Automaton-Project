@@ -11,10 +11,16 @@ import java.util.Set;
 
 public class ModelVirus extends ModelFactory{
 
-    Set<Position> virusSet = new HashSet<>();
+    Set<Position> t = new HashSet<>();
+    List<Position> virusList = new ArrayList<>();
 
     List<Position> peopleList = new ArrayList<>();
     List<Position> healerList = new ArrayList<>();
+    List<Position> sicknessPeopleList = new ArrayList<>();
+
+    List<Position> newVirusPositionList;
+    List<Position> newPeoplePositionList;
+    List<Position> newHealerPositionList;
 
     Position positionInstance = new Position(0, 0);
 
@@ -26,7 +32,7 @@ public class ModelVirus extends ModelFactory{
 
     public void initialisation(int virusNumber, int peopleNumber){
         for (int i = 0; i < virusNumber; i++)
-            virusSet.add(positionInstance.randomPosition(rowCount, colCount));
+            virusList.add(positionInstance.randomPosition(rowCount, colCount));
         for (int i = 0; i < peopleNumber; i++)
             peopleList.add(positionInstance.randomPosition(rowCount, colCount));
         for (int i = 0; i < peopleNumber; i++)
@@ -38,27 +44,45 @@ public class ModelVirus extends ModelFactory{
         EntitiesContext virusEntities = new EntitiesContext(grid, "virus");
         EntitiesContext peopleEntities = new EntitiesContext(grid, "people");
         EntitiesContext healerEntities = new EntitiesContext(grid, "healer");
+        EntitiesContext sicknessPeopleEntities = new EntitiesContext(grid, "sickness");
 
-        if(step % 2 == 0){
-            for (Position virus : virusSet) {
-                Position newPosition = virusEntities.activate(virus, virusSet).get(0);
-                grid.paint(virus.row(), virus.col());
-                virusEntities.paint(newPosition.row(), newPosition.col());
-            }
+        newVirusPositionList = new ArrayList<>();
+        newPeoplePositionList = new ArrayList<>();
+        newHealerPositionList = new ArrayList<>();
+
+
+        for (Position virus : virusList) {
+            Position newPosition = virusEntities.activate(virus, t).get(0);
+            grid.paint(virus.row(), virus.col());
+            virusEntities.paint(newPosition.row(), newPosition.col());
+            newVirusPositionList.add(newPosition);
         }
+
+        virusList = newVirusPositionList;
 
         for(Position people : peopleList){
-            Position newPosition = peopleEntities.activate(people, virusSet).get(0);
+            Position newPosition = peopleEntities.activate(people, t).get(0);
             grid.paint(people.row(), people.col());
             peopleEntities.paint(newPosition.row(), newPosition.col());
+            newPeoplePositionList.add(newPosition);
         }
+
+        peopleList = newPeoplePositionList;
 
         for(Position healer : healerList){
-            Position newPosition = peopleEntities.activate(healer, virusSet).get(0);
+            Position newPosition = peopleEntities.activate(healer, t).get(0);
             grid.paint(healer.row(), healer.col());
             healerEntities.paint(newPosition.row(), newPosition.col());
+            newHealerPositionList.add(newPosition);
         }
 
+        healerList = newHealerPositionList;
+
+        for(Position sicknessPeople : sicknessPeopleList){
+            Position newPosition = peopleEntities.activate(sicknessPeople, t).get(0);
+            grid.paint(sicknessPeople.row(), sicknessPeople.col());
+            sicknessPeopleEntities.paint(newPosition.row(), newPosition.col());
+        }
 
         step++;
     }

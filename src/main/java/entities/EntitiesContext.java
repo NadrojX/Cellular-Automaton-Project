@@ -42,6 +42,10 @@ public class EntitiesContext {
                 entitiesManager = new HealerEntities(grid);
                 this.strategy = strategy;
             }
+            case "sickness" -> {
+                entitiesManager = new SicknessPeopleEntities(grid);
+                this.strategy = strategy;
+            }
         }
     }
 
@@ -67,7 +71,7 @@ public class EntitiesContext {
             case "virus" -> {
                 return Collections.singletonList(entitiesManager.activateVirus());
             }
-            case "people", "healer" -> {
+            case "people", "healer", "sickness" -> {
                 return Collections.singletonList(entitiesManager.activatePeople(position));
             }
         }
