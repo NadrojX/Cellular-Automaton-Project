@@ -23,7 +23,7 @@ public class HealerEntities extends EntitiesManager{
         return super.getNeighbor(position);
     }
 
-    public Position activateHealer(Position position, Set<Position> virus){
+    public Position activateEntitiesNeedSet(Position position, Set<Position> virus){
         return aStepTowardFire(position, virus);
     }
 

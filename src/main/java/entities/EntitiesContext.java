@@ -14,15 +14,15 @@ public class EntitiesContext {
 
     public EntitiesContext(Grid grid, String strategy){
         switch (strategy) {
-            case "ffs" -> {
+            case "fireFighter" -> {
                 entitiesManager = new FiresFightersEntities(grid);
                 this.strategy = strategy;
             }
-            case "fs" -> {
+            case "fires" -> {
                 entitiesManager = new FiresEntities(grid);
                 this.strategy = strategy;
             }
-            case "mffs" -> {
+            case "motorizedFireFighter" -> {
                 entitiesManager = new MotorizedFFEntities(grid);
                 this.strategy = strategy;
             }
@@ -42,43 +42,37 @@ public class EntitiesContext {
                 entitiesManager = new HealerEntities(grid);
                 this.strategy = strategy;
             }
-            case "sickness" -> {
+            case "sicknessPeople" -> {
                 entitiesManager = new SicknessPeopleEntities(grid);
                 this.strategy = strategy;
             }
         }
     }
 
-    public void paint(int row, int col){
-        entitiesManager.paint(row, col);
-    }
-
-    public List<Position> activate(Position position, Set<Position> fires){
+    public List<Position> activate(Position position, Set<Position> setUsages){
         switch (strategy){
-            case "fs" -> {
-                return entitiesManager.activateFire(position);
+            case "fires" -> {
+                return entitiesManager.activateEntities(position);
             }
-            case "ffs" -> {
-                return Collections.singletonList(entitiesManager.activateFirefighter(position, fires));
+            case "fireFighter", "healer", "clouds" -> {
+                return Collections.singletonList(entitiesManager.activateEntitiesNeedSet(position, setUsages));
             }
-            case "mffs" -> {
-                Position position1 = entitiesManager.activateFirefighter(position, fires);
-                return Collections.singletonList(entitiesManager.activateFirefighter(position1, fires));
-            }
-            case "clouds" -> {
-                return Collections.singletonList(entitiesManager.activateClouds(position, fires));
+            case "motorizedFireFighter" -> {
+                Position position1 = entitiesManager.activateEntitiesNeedSet(position, setUsages);
+                return Collections.singletonList(entitiesManager.activateEntitiesNeedSet(position1, setUsages));
             }
             case "virus" -> {
                 return Collections.singletonList(entitiesManager.activateVirus());
             }
-            case "people", "sickness" -> {
+            case "people", "sicknessPeople" -> {
                 return Collections.singletonList(entitiesManager.activatePeople(position));
-            }
-            case "healer" -> {
-                return Collections.singletonList(entitiesManager.activateHealer(position, fires));
             }
         }
         return null;
+    }
+
+    public void paint(int row, int col){
+        entitiesManager.paint(row, col);
     }
 
     public List<Position> getNeighbor(Position position){

@@ -17,7 +17,7 @@ public class FiresEntities extends EntitiesManager{
         grid.getGraphicsContext2D().fillRect(row*height/rowCount,col*width/colCount,height/rowCount,width/colCount);
     }
 
-    public List<Position> activateFire(Position position) {
+    public List<Position> activateEntities(Position position) {
         return positionInstance.nextPosition(position, rowCount, colCount);
     }
 

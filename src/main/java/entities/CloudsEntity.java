@@ -18,7 +18,7 @@ public class CloudsEntity extends EntitiesManager implements ExtinguishEntities{
         grid.getGraphicsContext2D().fillOval(row*height/rowCount,col*width/colCount,height/rowCount,width/colCount);
     }
 
-    public Position activateClouds(Position position, Set<Position> fires) {
+    public Position activateEntitiesNeedSet(Position position, Set<Position> fires) {
         Position randomPosition = aStepTowardFire(position, fires);
         List<Position> nextFires = positionInstance.nextRandomPosition(randomPosition).stream().filter(fires::contains).toList();
         extinguish(randomPosition, fires);

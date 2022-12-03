@@ -44,7 +44,7 @@ public class ModelVirus extends ModelFactory{
         EntitiesContext virusEntities = new EntitiesContext(grid, "virus");
         EntitiesContext peopleEntities = new EntitiesContext(grid, "people");
         EntitiesContext healerEntities = new EntitiesContext(grid, "healer");
-        EntitiesContext sicknessPeopleEntities = new EntitiesContext(grid, "sickness");
+        EntitiesContext sicknessPeopleEntities = new EntitiesContext(grid, "sicknessPeople");
 
         newVirusPositionList = new ArrayList<>();
         newPeoplePositionList = new ArrayList<>();
@@ -73,7 +73,6 @@ public class ModelVirus extends ModelFactory{
         }
 
         peopleList = newPeoplePositionList;
-
 
         virusSet.clear();
         virusSet.addAll(sicknessPeopleList);

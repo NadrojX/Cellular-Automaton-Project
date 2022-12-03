@@ -13,9 +13,7 @@ public abstract class ModelFactory implements Model{
         this.colCount = grid.getColCount();
     }
 
-    public void initialisation(int fireNumber, int fireFighterNumber, int motorizedFireFighterNumber, int cloudsNumber, int mountainsNumber, int rockNumber){
-
-    }
+    public void initialisation(int fireNumber, int fireFighterNumber, int motorizedFireFighterNumber, int cloudsNumber, int mountainsNumber, int rockNumber){}
 
     public void  initialisation(int virusNumber, int peopleNumber, int healerNumber){}
 
