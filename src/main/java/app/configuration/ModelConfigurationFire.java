@@ -2,8 +2,8 @@ package app.configuration;
 
 public class ModelConfigurationFire {
     int fireNumber = 3;
-    int fireFighterNumber = 0;
-    int motorizedFireFighterNumber = 0;
+    int fireFighterNumber = 7;
+    int motorizedFireFighterNumber = 2;
     int cloudsNumber = 2;
     int mountainsNumber = 4;
     int rockNumber = 2;

@@ -166,6 +166,7 @@ public class ModelFire extends ModelFactory {
                     }
                 }
             }
+
             for (Position newFire : newFires)
                 firesEntities.paint(newFire.row(), newFire.col());
             firesSet.addAll(newFires);
