@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 
 
 public class App extends Application {
-
     boolean isInPause = true;
 
     public static void main(String[] args) {
@@ -43,13 +42,20 @@ public class App extends Application {
         ScheduledThreadPoolExecutor threadPoolExecutor = new ScheduledThreadPoolExecutor(1);
         threadPoolExecutor.scheduleAtFixedRate(() -> {
             if(!isInPause) {
-                grid.modelUse.activationFire();
-                //grid.modelUse.activationVirus();
+                switch (grid.modelChoose.getModelChoose()) {
+                    case 0 -> grid.modelUse.activationFire();
+                    case 1 -> grid.modelUse.activationVirus();
+                }
                 grid.repaint();
             }
         }, 0, 50 , TimeUnit.MILLISECONDS);
 
-        primaryStage.setTitle("Automate Project");
+
+        switch (grid.modelChoose.getModelChoose()) {
+            case 0 -> primaryStage.setTitle("Automate Project | Fire Model");
+            case 1 -> primaryStage.setTitle("Automate Project | Virus Model");
+        }
+
         primaryStage.setResizable(false);
         primaryStage.setOnCloseRequest(event -> System.exit(0));
     }

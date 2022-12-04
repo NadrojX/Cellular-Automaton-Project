@@ -1,5 +1,7 @@
 package app;
 
+import app.configuration.ModelConfigurationFire;
+import app.configuration.ModelConfigurationVirus;
 import model.ModelFactory;
 import model.ModelFire;
 import model.ModelVirus;
@@ -20,12 +22,12 @@ public class ModelUse {
     modelVirus = new ModelVirus(grid);
   }
 
-  public void initialisationFire(int fireNumber, int fireFighterNumber, int motorizedFireFighterNumber, int cloudsNumber, int mountainsNumber, int rockNumber) {
-    modelFire.initialisation(fireNumber, fireFighterNumber, motorizedFireFighterNumber, cloudsNumber, mountainsNumber, rockNumber);
+  public void initialisationFire(ModelConfigurationFire modelConfiguration) {
+    modelFire.initialisationFire(modelConfiguration);
   }
 
-  public void initialisationVirus(int virusNumber){
-    modelVirus.initialisation(virusNumber);
+  public void initialisationVirus(ModelConfigurationVirus modelConfiguration){
+    modelVirus.initialisationVirus(modelConfiguration);
   }
 
   public void activationFire() {

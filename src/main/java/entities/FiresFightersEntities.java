@@ -8,8 +8,6 @@ import java.util.*;
 
 public class FiresFightersEntities extends EntitiesManager implements ExtinguishEntities{
 
-    Set<Position> mountains;
-
     public FiresFightersEntities(Grid grid){
         super(grid);
     }
@@ -20,7 +18,7 @@ public class FiresFightersEntities extends EntitiesManager implements Extinguish
         grid.getGraphicsContext2D().fillOval(row*height/rowCount,col*width/colCount,height/rowCount,width/colCount);
     }
 
-    public Position activateFirefighter(Position position, Set<Position> fires) {
+    public Position activateEntitiesNeedSet(Position position, Set<Position> fires) {
         Position randomPosition = aStepTowardFire(position, fires);
         List<Position> nextFires = positionInstance.nextPosition(randomPosition, colCount, rowCount).stream().filter(fires::contains).toList();
         extinguish(randomPosition, fires);

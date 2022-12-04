@@ -1,5 +1,8 @@
 package app;
 
+import app.configuration.ModelChoose;
+import app.configuration.ModelConfigurationFire;
+import app.configuration.ModelConfigurationVirus;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -11,6 +14,7 @@ public class Grid extends Canvas{
     double rowCount;
     ModelUse modelUse;
 
+    ModelChoose modelChoose = new ModelChoose();
 
     public Grid(int width, int height, int colCount, int rowCount) {
         super(width,height);
@@ -21,20 +25,26 @@ public class Grid extends Canvas{
         setFocusTraversable(true);
         setOnMousePressed(this::mousePressed);
         modelUse = new ModelUse(this);
-        modelUse.initialisationFire(3,8, 2, 2, 4, 2);
-        //modelUse.initialisationVirus(2);
+        switch (modelChoose.getModelChoose()) {
+            case 0 -> modelUse.initialisationFire(new ModelConfigurationFire());
+            case 1 -> modelUse.initialisationVirus(new ModelConfigurationVirus());
+        }
     }
 
     public void restart(MouseEvent mouseEvent){
         modelUse = new ModelUse(this);
-        modelUse.initialisationFire(3,6, 1, 2, 4, 2);
-        //modelUse.initialisationVirus(4);
+        switch (modelChoose.getModelChoose()) {
+            case 0 -> modelUse.initialisationFire(new ModelConfigurationFire());
+            case 1 -> modelUse.initialisationVirus(new ModelConfigurationVirus());
+        }
         getGraphicsContext2D().clearRect(0,0,width, height);
         repaint();
     }
     private void mousePressed(MouseEvent mouseEvent) {
-        modelUse.activationFire();
-        //modelUse.activationVirus();
+        switch (modelChoose.getModelChoose()) {
+            case 0 -> modelUse.activationFire();
+            case 1 -> modelUse.activationVirus();
+        }
         repaint();
     }
 

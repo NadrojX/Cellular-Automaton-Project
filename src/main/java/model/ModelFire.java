@@ -2,29 +2,30 @@ package model;
 
 import app.Grid;
 import app.Position;
+import app.SingletonRandom;
+import app.configuration.ModelConfigurationFire;
 import entities.EntitiesContext;
-import ground.Grounds;
-import ground.Mountains;
-import ground.Road;
-import ground.Rock;
+import ground.*;
 
 import java.util.*;
 
 public class ModelFire extends ModelFactory {
 
-    List<Position> firefighters = new ArrayList<>();
-    List<Position> motorizedFirefighters = new ArrayList<>();
-    Set<Position> fires = new HashSet<>();
-    List<Position> clouds = new ArrayList<>();
-    Set<Position> mountains = new HashSet<>();
-    Set<Position> roads = new HashSet<>();
-    Set<Position> rocks = new HashSet<>();
+    List<Position> firefightersList = new ArrayList<>();
+    List<Position> motorizedFirefightersList = new ArrayList<>();
+    Set<Position> firesSet = new HashSet<>();
+    List<Position> cloudsList = new ArrayList<>();
+    Set<Position> mountainsSet = new HashSet<>();
+    Set<Position> roadsSet = new HashSet<>();
+    Set<Position> rocksSet = new HashSet<>();
+    Set<Position> rocksBlock = new HashSet<>();
+
+    Set<Position> fireInWaiting = new HashSet<>();
     List<Position> ffNewPositions;
     List<Position> mffNewPositions;
     List<Position> cloudsNewPositions;
     Position positionInstance = new Position(0, 0);
-
-    Random random = new Random();
+    SingletonRandom random = SingletonRandom.getInstance();
     int step = 0;
 
     public ModelFire(Grid grid) {
@@ -32,129 +33,145 @@ public class ModelFire extends ModelFactory {
     }
 
     @Override
-    public void initialisation(int fireNumber, int fireFighterNumber, int motorizedFireFighterNumber, int cloudsNumber, int mountainsNumber, int rockNumber) {
-        for (int index = 0; index < fireNumber; index++)
-            fires.add(positionInstance.randomPosition(rowCount, colCount));
-        for (int index = 0; index < fireFighterNumber; index++)
-            firefighters.add(positionInstance.randomPosition(rowCount, colCount));
-        for (int index = 0; index < motorizedFireFighterNumber; index++)
-            motorizedFirefighters.add(positionInstance.randomPosition(rowCount, colCount));
-        for (int index = 0; index < cloudsNumber; index++)
-            clouds.add(positionInstance.randomPosition(rowCount, colCount));
-        for (int index = 0; index < mountainsNumber; index++)
-            mountains.add(positionInstance.randomPosition(rowCount, colCount));
+    public void initialisationFire(ModelConfigurationFire modelConfiguration) {
+        for (int index = 0; index < modelConfiguration.getFireNumber(); index++)
+            firesSet.add(positionInstance.randomPosition(rowCount, colCount));
+        for (int index = 0; index < modelConfiguration.getFireFighterNumber(); index++)
+            firefightersList.add(positionInstance.randomPosition(rowCount, colCount));
+        for (int index = 0; index < modelConfiguration.getMotorizedFireFighterNumber(); index++)
+            motorizedFirefightersList.add(positionInstance.randomPosition(rowCount, colCount));
+        for (int index = 0; index < modelConfiguration.getCloudsNumber(); index++)
+            cloudsList.add(positionInstance.randomPosition(rowCount, colCount));
+        for (int index = 0; index < modelConfiguration.getMountainsNumber(); index++)
+            mountainsSet.add(positionInstance.randomPosition(rowCount, colCount));
 
         for (int index = 0; index < 2; index++) {
-            roads.add(positionInstance.randomPosition(rowCount, colCount));
-            int choose = random.nextInt(2);
+            roadsSet.add(positionInstance.randomPosition(rowCount, colCount));
+            int choose = random.getRandomNumber(2);
             switch (choose) {
                 case 0 -> {
-                    int sizeRoad = random.nextInt(6);
+                    int sizeRoad = random.getRandomNumber(6);
                     for (int i = 0; i < sizeRoad; i++) {
-                        for (int j = 0; j < roads.size(); j++) {
+                        for (int j = 0; j < roadsSet.size(); j++) {
                             if(j > rowCount) continue;
-                            roads.add(new Position((roads.stream().toList().get(j).row() + i), roads.stream().toList().get(j).col()));
+                            roadsSet.add(new Position((roadsSet.stream().toList().get(j).row() + i), roadsSet.stream().toList().get(j).col()));
                         }
                     }
                 }
                 case 1 -> {
-                    int sizeRoad2 = random.nextInt(6);
+                    int sizeRoad2 = random.getRandomNumber(6);
                     for (int k = 0; k < sizeRoad2; k++) {
-                        for (int l = 0; l < roads.size(); l++) {
+                        for (int l = 0; l < roadsSet.size(); l++) {
                             if(l > colCount) continue;
-                            roads.add(new Position((roads.stream().toList().get(l).row()), roads.stream().toList().get(l).col() - l));
+                            roadsSet.add(new Position((roadsSet.stream().toList().get(l).row()), roadsSet.stream().toList().get(l).col() - l));
                         }
                     }
                 }
             }
         }
 
-        for (int index = 0; index < rockNumber; index++)
-            rocks.add(positionInstance.randomPosition(rowCount, colCount));
+        for (int index = 0; index < modelConfiguration.getRockNumber(); index++)
+            rocksSet.add(positionInstance.randomPosition(rowCount, colCount));
     }
 
     @Override
     public void activation() {
-        EntitiesContext ffs = new EntitiesContext(grid, "ffs");
-        EntitiesContext fs = new EntitiesContext(grid, "fs");
-        EntitiesContext mffs = new EntitiesContext(grid, "mffs");
-        EntitiesContext cl = new EntitiesContext(grid, "clouds");
+        EntitiesContext fireFightersEntities = new EntitiesContext(grid, "fireFighter");
+        EntitiesContext firesEntities = new EntitiesContext(grid, "fires");
+        EntitiesContext motorizedFireFighterEntities = new EntitiesContext(grid, "motorizedFireFighter");
+        EntitiesContext cloudsEntities = new EntitiesContext(grid, "clouds");
 
-        Grounds mount = new Mountains(grid);
-        Grounds road = new Road(grid);
-        Grounds rock = new Rock(grid);
+        GroundFactory mountainsGround = new Mountains(grid);
+        GroundFactory roadGround = new Road(grid);
+        GroundFactory rockGround = new Rock(grid);
 
         ffNewPositions = new ArrayList<>();
         mffNewPositions = new ArrayList<>();
         cloudsNewPositions = new ArrayList<>();
 
-        for (Position mountain : mountains) {
-            Position newPosition = mount.activate(mountain);
+        for (Position mountain : mountainsSet) {
+            Position newPosition = mountainsGround.activate(mountain);
             grid.paint(mountain.row(), mountain.col());
-            mount.paint(newPosition.row(), newPosition.col());
+            mountainsGround.paint(newPosition.row(), newPosition.col());
         }
 
-        for (Position roa : roads) {
-            Position newPosition = road.activate(roa);
-            grid.paint(roa.row(), roa.col());
-            road.paint(newPosition.row(), newPosition.col());
+        for (Position road : roadsSet) {
+            Position newPosition = roadGround.activate(road);
+            grid.paint(road.row(), road.col());
+            roadGround.paint(newPosition.row(), newPosition.col());
         }
 
-        for (Position rockS : rocks) {
-            Position newPosition = mount.activate(rockS);
-            grid.paint(rockS.row(), rockS.col());
-            rock.paint(newPosition.row(), newPosition.col());
+        for (Position rock : rocksSet) {
+            Position newPosition = rockGround.activate(rock);
+            grid.paint(rock.row(), rock.col());
+            rockGround.paint(newPosition.row(), newPosition.col());
+            rocksBlock.addAll(rockGround.getNeighbor(rock));
         }
 
-        for (Position ff : firefighters) {
-            Position newPosition = ffs.activate(ff, fires).get(0);
-            if(mountains.contains(newPosition)){
-                ffs.paint(ff.row(), ff.col());
+        for (Position fireFighter : firefightersList) {
+            Position newPosition = fireFightersEntities.activate(fireFighter, firesSet).get(0);
+            if(mountainsSet.contains(newPosition)){
+                fireFightersEntities.paint(fireFighter.row(), fireFighter.col());
             } else {
-                grid.paint(ff.row(), ff.col());
-                ffs.paint(newPosition.row(), newPosition.col());
+                grid.paint(fireFighter.row(), fireFighter.col());
+                fireFightersEntities.paint(newPosition.row(), newPosition.col());
                 ffNewPositions.add(newPosition);
             }
         }
 
-        firefighters = ffNewPositions;
+        firefightersList = ffNewPositions;
 
-        for (Position mff : motorizedFirefighters) {
-            Position newPosition = mffs.activate(mff, fires).get(0);
-            if(mountains.contains(newPosition)){
-                mffs.paint(mff.row(), mff.col());
+        for (Position motorizedFireFighter : motorizedFirefightersList) {
+            Position newPosition = motorizedFireFighterEntities.activate(motorizedFireFighter, firesSet).get(0);
+            if(mountainsSet.contains(newPosition)){
+                motorizedFireFighterEntities.paint(motorizedFireFighter.row(), motorizedFireFighter.col());
             } else {
-                grid.paint(mff.row(), mff.col());
-                mffs.paint(newPosition.row(), newPosition.col());
+                grid.paint(motorizedFireFighter.row(), motorizedFireFighter.col());
+                motorizedFireFighterEntities.paint(newPosition.row(), newPosition.col());
                 mffNewPositions.add(newPosition);
             }
         }
 
-        motorizedFirefighters = mffNewPositions;
+        motorizedFirefightersList = mffNewPositions;
 
-        for (Position cloud : clouds) {
-            Position newPosition = cl.activate(cloud, fires).get(0);
+        for (Position cloud : cloudsList) {
+            Position newPosition = cloudsEntities.activate(cloud, firesSet).get(0);
             grid.paint(cloud.row(), cloud.col());
-            cl.paint(newPosition.row(), newPosition.col());
+            cloudsEntities.paint(newPosition.row(), newPosition.col());
             cloudsNewPositions.add(newPosition);
         }
 
-        clouds = cloudsNewPositions;
+        cloudsList = cloudsNewPositions;
+
+        if(step % 4 == 0){
+            for(Position fireWaiting : fireInWaiting){
+                rocksBlock.remove(fireWaiting);
+            }
+        }
 
         if (step % 2 == 0) {
             List<Position> newFires = new ArrayList<>();
-            for (Position fire : fires) {
-                newFires.addAll(fs.activate(fire,fires));
+            for (Position fire : firesSet) {
+                newFires.addAll(firesEntities.activate(fire, firesSet));
                 for (int i = 0; i < newFires.size(); i++) {
-                    if (mountains.contains(newFires.get(i)) || roads.contains(newFires.get(i))) {
+                    if (mountainsSet.contains(newFires.get(i)) || roadsSet.contains(newFires.get(i))) {
+                        newFires.remove(newFires.get(i));
+                    }
+                }
+
+                for (int i = 0; i < newFires.size(); i++) {
+                    if (rocksBlock.contains(newFires.get(i))) {
+                        fireInWaiting.add(newFires.get(i));
                         newFires.remove(newFires.get(i));
                     }
                 }
             }
+
             for (Position newFire : newFires)
-                fs.paint(newFire.row(), newFire.col());
-            fires.addAll(newFires);
+                firesEntities.paint(newFire.row(), newFire.col());
+            firesSet.addAll(newFires);
         }
+
         step++;
     }
 }

@@ -6,27 +6,28 @@ import javafx.scene.paint.Color;
 
 import java.util.*;
 
-public class MotorizedFFEntities extends EntitiesManager{
+public class HealerEntities extends EntitiesManager{
 
-    public MotorizedFFEntities(Grid grid) {
+    public HealerEntities(Grid grid) {
         super(grid);
     }
+
     @Override
     public void paint(int row, int col) {
-        grid.getGraphicsContext2D().setFill(Color.DARKCYAN);
-        grid.getGraphicsContext2D().fillOval(row*height/rowCount,col*width/colCount,height/rowCount,width/colCount);
+        grid.getGraphicsContext2D().setFill(Color.LIMEGREEN);
+        grid.getGraphicsContext2D().fillRect(row * height / rowCount, col * width / colCount, height / rowCount, width / colCount);
     }
 
-    public Position activateEntitiesNeedSet(Position position, Set<Position> fires) {
-        Position randomPosition = aStepTowardFire(position, fires);
-        List<Position> nextFires = positionInstance.nextPosition(randomPosition, colCount, rowCount).stream().filter(fires::contains).toList();
-        extinguish(randomPosition, fires);
-        for (Position fire : nextFires)
-            extinguish(fire, fires);
-        return randomPosition;
+    @Override
+    public List<Position> getNeighbor(Position position) {
+        return super.getNeighbor(position);
     }
 
-    public Position aStepTowardFire(Position position, Set<Position> fires) {
+    public Position activateEntitiesNeedSet(Position position, Set<Position> virus){
+        return aStepTowardFire(position, virus);
+    }
+
+    private Position aStepTowardFire(Position position, Set<Position> virus) {
         Set<Position> seen = new HashSet<>();
         HashMap<Position, Position> firstMove = new HashMap<>();
         Queue<Position> toVisit = new LinkedList<>(positionInstance.nextPosition(position, colCount, rowCount));
@@ -34,7 +35,7 @@ public class MotorizedFFEntities extends EntitiesManager{
             firstMove.put(initialMove, initialMove);
         while (!toVisit.isEmpty()) {
             Position current = toVisit.poll();
-            if (fires.contains(current))
+            if (virus.contains(current))
                 return firstMove.get(current);
             for (Position adjacent : positionInstance.nextPosition(current, colCount, rowCount)) {
                 if (seen.contains(adjacent)) continue;
@@ -45,10 +46,4 @@ public class MotorizedFFEntities extends EntitiesManager{
         }
         return position;
     }
-
-    public void extinguish(Position position, Set<Position> fires) {
-        fires.remove(position);
-        grid.paint(position.row(), position.col());
-    }
-
 }
