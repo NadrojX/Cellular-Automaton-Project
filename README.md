@@ -10,6 +10,7 @@ Les nouvelles fonctionnalités à implémenté, on était :
 - Des cases montagnes qui n'en sont pas franchissables par le feu ni par les pompiers.
 - Des cases routes qui ne sont franchissables que par les pompiers.
 - Des cases rocaille sur lesquelles le feu met quatre tours à se propager.
+
 Un autre modèle au choix devait être implémenté.
 J'ai choisi un modèle Virus-population-médecin.
 
@@ -23,5 +24,6 @@ The new features to implement were :
 - Mountain boxes that cannot be crossed by fire or firemen.
 - Roads that can only be crossed by firemen.
 - Rocky boxes on which the fire takes four turns to spread.
+
 Another model of your choice had to be implemented.
 I chose a Virus-population-doctor model.
