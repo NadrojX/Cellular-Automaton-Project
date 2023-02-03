@@ -1,6 +1,12 @@
-# Cellular-Automaton-Project
+<div align = center>
 
+  # <ins>Cellular-Automaton-Project :
+  
+</div>
+
+<div align = center>
 [FR]
+</div>
 
 Ce projet à était réaliser dans le cadre de mes études. Le but étant d'implémenter un proto-simulateur d'automate cellulaire.
 Une base de code à était fournis le but à était d'implémenter du code pour rajouter des fonctionnalités, ainsi que modifier le code pour qu'il respecte les principes SOLID.
@@ -14,7 +20,9 @@ Les nouvelles fonctionnalités à implémenté, on était :
 Un autre modèle au choix devait être implémenté.
 J'ai choisi un modèle Virus-population-médecin.
 
+<div align = center>
 [EN]
+</div>
 
 This project was realized during my studies. The goal was to implement a proto-simulator of cellular automaton.
 A code base was provided the goal was to implement code to add features, and modify the code to meet the principles SOLID.
@@ -27,3 +35,13 @@ The new features to implement were :
 
 Another model of your choice had to be implemented.
 I chose a Virus-population-doctor model.
+
+<div align = center>
+
+ # <ins>Langage et Technologie :
+ 
+  <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white" width="55" height="25" />
+  <img src="https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white" width="55" height="25" />
+  <img src="https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white" width="70" height="27" />
+
+</div>
