@@ -38,7 +38,7 @@ I chose a Virus-population-doctor model.
 
 <div align = center>
 
- # <ins>Langage et Technologie :
+ # <ins>Langage et Technologies :
  
   <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white" width="55" height="25" />
   <img src="https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white" width="55" height="25" />
