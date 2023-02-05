@@ -1,7 +1,8 @@
 <div align = center>
 
   # <ins>Cellular-Automaton-Project :
-  
+  ![Capture d’écran 2023-02-05 213425](https://user-images.githubusercontent.com/66216638/216844894-897d398a-fb01-4355-9139-969eb40ecf49.jpg)
+
 </div>
 
 <div align = center>
